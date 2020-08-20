@@ -8,6 +8,6 @@ export class MainStateMachine extends StateMachine {
 
 
       // set default sate
-      this.setState(this.states[1]);
+      this.setState(this.states[0]);
     }
 }

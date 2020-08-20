@@ -1,10 +1,10 @@
 import { IDrawable, ISurfaceDraw } from 'my-libs/base-draw';
-import { TransitionModel } from '../datamodel/transition';
+import { StateModel } from '../datamodel/state';
 import { StateMachineModel } from '../datamodel/state-machine';
 
 export class StateDraw implements IDrawable {
     constructor(private stateMachine: StateMachineModel,
-                private transition: TransitionModel,
+                private state: StateModel,
                 private strokeStyle: string = '#F3E5F5') {
     }
 
@@ -13,6 +13,7 @@ export class StateDraw implements IDrawable {
     }
 
     draw(surface: ISurfaceDraw): void {
+      surface.rect(this.state.position.x - 75, this.state.position.y - 50, 150, 100);
     //   surface.line(this.line.first.x, this.line.first.y,
     //     this.line.second.x, this.line.second.y, this.strokeStyle);
     }

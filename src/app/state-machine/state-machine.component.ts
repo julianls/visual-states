@@ -8,6 +8,9 @@ import { TransitionDraw } from '../applogic/drawable/transition-draw';
 import { ModelInstructionProcessor } from '../applogic/instructions/state-instruction-processor';
 import { AppDataService } from '../app-data.service';
 import { StateMachineModel } from '../applogic/datamodel/state-machine';
+import { StateModel } from '../applogic/datamodel/state';
+import { Point } from 'my-libs/base-geometry';
+import { TransitionModel } from '../applogic/datamodel/transition';
 
 @Component({
   selector: 'app-state-machine',
@@ -31,11 +34,28 @@ export class StateMachineComponent implements OnInit {
   }
 
   private initData(model: StateMachineModel): void {
+    model.states.push(new StateModel());
+    model.states.push(new StateModel());
+    model.states[1].position = new Point(200, 0);
+    model.transitions.push(new TransitionModel());
+    model.transitions[0].sourceStateId = 0;
+    model.transitions[0].targetStateId = 1;
+
     this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems);
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
     // this.initCommands();
-    // this.loadDrawItems();
+    this.loadDrawItems();
     this.commandsData.isRequesting = false;
+  }
+
+  loadDrawItems(): void {
+    for (const s of this.commandsData.model.states){
+      this.drawItems.push(new StateDraw(this.commandsData.model, s));
+    }
+
+    for (const t of this.commandsData.model.transitions){
+      this.drawItems.push(new TransitionDraw(this.commandsData.model, t));
+    }
   }
 
   widthChanged(width: number): void {
