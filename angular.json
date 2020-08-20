@@ -31,7 +31,16 @@
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": ["my-libs/base-draw/index.js",
+              "my-libs/base-geometry/index.js",
+              "my-libs/base-instruction/index.js",
+              "my-libs/state-machine/index.js",
+              "my-libs/surface-draw/bundles/surface-draw.umd.js"],
+              "allowedCommonJsDependencies": [
+                "my-libs/base-geometry",
+                "my-libs/base-instruction",
+                "my-libs/state-machine"
+              ]
           },
           "configurations": {
             "production": {

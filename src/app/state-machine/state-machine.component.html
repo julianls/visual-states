@@ -1,1 +1,18 @@
-<p>state-machine works!</p>
+<mat-toolbar>
+    <h1>State Machine - Details</h1>
+</mat-toolbar>
+<div>
+  <lib-surface-draw [(scale)]="viewControl.scale"
+                   [(offsetX)]="viewControl.offsetX"
+                   [(offsetY)]="viewControl.offsetY"
+                   (widthChange)="widthChanged($event)"
+                   (heightChange)="heightChanged($event)"
+                   [(switch)]="viewControl.switch"
+                   (down)="onDown($event)"
+                   (move)="onMove($event)"
+                   (up)="onUp($event)"
+                   (wheelRotate)="onWheel($event)"
+                   [drawAxises]="true"
+                   [drawItems]="drawItems">
+  </lib-surface-draw>
+</div>
