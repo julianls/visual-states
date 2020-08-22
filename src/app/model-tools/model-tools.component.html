@@ -1,0 +1,24 @@
+<mat-card class="model-tools-container">
+    <button mat-icon-button (click)="onSelectState()" matTooltip="Select objects">
+      <mat-icon color="{{isSelectState() ? 'primary' : ''}}" aria-label="Select objects">pan_tool</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onAddStateState()" matTooltip="Add State">
+      <mat-icon color="{{isAddStateState() ? 'primary' : ''}}" aria-label="Add State">scatter_plot</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onAddTransitionState()" matTooltip="Add Transition">
+      <mat-icon color="{{isAddTransitionState() ? 'primary' : ''}}" aria-label="Add Transition">multiline_chart</mat-icon>
+    </button>
+    <button (click)="onDelete()" mat-icon-button matTooltip="Delete selected (Ctrl + Del)">
+      <mat-icon aria-label="Delete selected">delete_forever</mat-icon>
+    </button>
+    <button (click)="onZoomIn()" mat-icon-button matTooltip="Zoom In (Ctrl + Arrow Up)">
+      <mat-icon aria-label="Zoom In">zoom_in</mat-icon>
+    </button>
+    <button (click)="onZoomOut()" mat-icon-button matTooltip="Zoom Out (Ctrl + Arrow Down)">
+      <mat-icon aria-label="Zoom Out">zoom_out</mat-icon>
+    </button>
+    <button (click)="onZoomAll()" mat-icon-button matTooltip="Zoom All (Ctrl + Space)">
+      <mat-icon aria-label="Zoom All">zoom_out_map</mat-icon>
+    </button>
+  </mat-card>
+  

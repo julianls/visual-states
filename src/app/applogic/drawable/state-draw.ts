@@ -13,8 +13,7 @@ export class StateDraw implements IDrawable {
     }
 
     draw(surface: ISurfaceDraw): void {
-      surface.rect(this.state.position.x - 75, this.state.position.y - 50, 150, 100);
-    //   surface.line(this.line.first.x, this.line.first.y,
-    //     this.line.second.x, this.line.second.y, this.strokeStyle);
+      surface.rect(this.state.position.x - 75, this.state.position.y - 50,
+                   150, 100, this.strokeStyle);
     }
 }

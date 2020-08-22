@@ -5,6 +5,8 @@ export class TransitionModel  {
     public targetStateId: number;
     public positionSource: Point = new Point(0, 0);
     public positionTarget: Point = new Point(0, 0);
+    public condition: string;
+    public actions: string[] = [];
 
     constructor() {
     }

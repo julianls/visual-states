@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+// $background: map-get($theme, background);
+
+.model-tools-container {
+//   background-color: mat-color($background, card, 0.5);
+  position: fixed;
+  float: left;
+  width: 48px;
+  padding: 2px;
+  left: 5px;
+  top: 85px;
+}
+
+.short-button {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-width: 10px;
+}

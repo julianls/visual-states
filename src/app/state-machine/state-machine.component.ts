@@ -11,6 +11,21 @@ import { StateMachineModel } from '../applogic/datamodel/state-machine';
 import { StateModel } from '../applogic/datamodel/state';
 import { Point } from 'my-libs/base-geometry';
 import { TransitionModel } from '../applogic/datamodel/transition';
+import { UpdateFocusCommand } from '../applogic/statemachine/commands/update-focus-command';
+import { UpdateActiveCommand } from '../applogic/statemachine/commands/update-active-command';
+import { MoveActiveCommand } from '../applogic/statemachine/commands/move-active-command';
+import { EndMoveActiveCommand } from '../applogic/statemachine/commands/end-move-active-command';
+import { MoveAreaCommand } from '../applogic/statemachine/commands/move-area-command';
+import { ZoomAreaCommand } from '../applogic/statemachine/commands/zoom-area-command';
+import { HasFocusCommand } from '../applogic/statemachine/commands/has-focus-command';
+import { NoFocusCommand } from '../applogic/statemachine/commands/no-focus-command';
+import { DeleteCommand } from '../applogic/statemachine/commands/delete-command';
+import { ZoomAllCommand } from '../applogic/statemachine/commands/zoom-all-command';
+import { ZoomInCommand } from '../applogic/statemachine/commands/zoom-in-command';
+import { ZoomOutCommand } from '../applogic/statemachine/commands/zoom-out-command';
+import { CleanupUncompletedCommand } from '../applogic/statemachine/commands/cleanup-uncompleted-command';
+import { CheckDraggedCommand } from '../applogic/statemachine/commands/check-dragged-command';
+import { SaveCommand } from '../applogic/statemachine/commands/save-command';
 
 @Component({
   selector: 'app-state-machine',
@@ -43,9 +58,28 @@ export class StateMachineComponent implements OnInit {
 
     this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems);
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
-    // this.initCommands();
+    this.initCommands();
     this.loadDrawItems();
     this.commandsData.isRequesting = false;
+  }
+
+  private initCommands(): void {
+    this.stateMachine.registerCommand('update-focus', new UpdateFocusCommand(this.commandsData));
+    this.stateMachine.registerCommand('update-active', new UpdateActiveCommand(this.commandsData));
+    this.stateMachine.registerCommand('move-active', new MoveActiveCommand(this.commandsData));
+    this.stateMachine.registerCommand('end-move-active', new EndMoveActiveCommand(this.commandsData));
+    this.stateMachine.registerCommand('move-area', new MoveAreaCommand(this.commandsData));
+    this.stateMachine.registerCommand('zoom-area', new ZoomAreaCommand(this.commandsData));
+    this.stateMachine.registerCommand('has-focus', new HasFocusCommand(this.commandsData));
+    this.stateMachine.registerCommand('no-focus', new NoFocusCommand(this.commandsData));
+
+    this.stateMachine.registerCommand('delete', new DeleteCommand(this.commandsData));
+    this.stateMachine.registerCommand('zoom-all', new ZoomAllCommand(this.commandsData));
+    this.stateMachine.registerCommand('zoom-in', new ZoomInCommand(this.commandsData));
+    this.stateMachine.registerCommand('zoom-out', new ZoomOutCommand(this.commandsData));
+    this.stateMachine.registerCommand('cleanup-uncompleted', new CleanupUncompletedCommand(this.commandsData));
+    this.stateMachine.registerCommand('check-dragged', new CheckDraggedCommand(this.commandsData));
+    this.stateMachine.registerCommand('save', new SaveCommand(this.commandsData));
   }
 
   loadDrawItems(): void {
@@ -59,26 +93,26 @@ export class StateMachineComponent implements OnInit {
   }
 
   widthChanged(width: number): void {
-    // this.viewControl.width = width;
+    this.viewControl.width = width;
   }
 
   heightChanged(height: number): void {
-    // this.viewControl.height = height;
+    this.viewControl.height = height;
   }
 
   onDown(data: SurfaceData): void {
-    // this.stateMachine.onevent("down", data);
+    this.stateMachine.onevent('down', data);
   }
 
   onMove(data: SurfaceData): void {
-    // this.stateMachine.onevent("move", data);
+    this.stateMachine.onevent('move', data);
   }
 
   onUp(data: SurfaceData): void {
-    // this.stateMachine.onevent("up", data);
+    this.stateMachine.onevent('up', data);
   }
 
   onWheel(data: SurfaceData): void {
-    // this.stateMachine.onevent("wheel", data);
+    this.stateMachine.onevent('wheel', data);
   }
 }
