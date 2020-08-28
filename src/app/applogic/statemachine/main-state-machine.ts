@@ -1,5 +1,7 @@
 import { StateMachine } from 'my-libs/state-machine';
 import { ModelEditState } from './model-edit-state';
+import { NewStateState } from './new-state-state';
+import { NewTransitionState } from './new-transition-state';
 
 export class MainStateMachine extends StateMachine {
     constructor() {
@@ -7,6 +9,8 @@ export class MainStateMachine extends StateMachine {
 
       this.addEntryState();
       this.states.push(new ModelEditState());
+      this.states.push(new NewStateState());
+      this.states.push(new NewTransitionState());
 
       this.addTransition('', 'entry', 'model-edit');
 

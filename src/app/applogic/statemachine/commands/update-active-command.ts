@@ -1,12 +1,13 @@
 import { CommandsData } from './command-data';
 import { IBaseCommand } from 'my-libs/state-machine';
+import { SurfaceData } from 'my-libs/surface-draw';
 
 export class UpdateActiveCommand implements IBaseCommand {
   constructor(private commandsData: CommandsData) {
 
   }
 
-  public execute(data: any): boolean {
+  public execute(data: SurfaceData): boolean {
     this.commandsData.selectedItems.clear();
     if (!data.event.altKey) {
       this.commandsData.selectedItems.append(this.commandsData.focusItems);

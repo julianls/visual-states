@@ -1,5 +1,10 @@
 <mat-toolbar>
     <h1>State Machine - Details</h1>
+    <button (click)="onUndo()" [disabled]="!canUndo()" mat-icon-button matTooltip="Undo (Ctrl + Z)"><mat-icon aria-label="Undo">undo</mat-icon></button>
+    <button (click)="onRedo()" [disabled]="!canRedo()" mat-icon-button matTooltip="Redo (Ctrl + Shift + Z)"><mat-icon aria-label="Redo">redo</mat-icon></button>
+    <button (click)="onSave()" *ngIf="canUndo()" mat-icon-button matTooltip="Save (Ctrl + S)"><mat-icon aria-label="Save">save</mat-icon></button>
+    <span class="fill-space"></span>
+    <button mat-icon-button (click)="goBack()" matTooltip="Close"><mat-icon aria-label="Close">close</mat-icon></button>
 </mat-toolbar>
 <div>
   <lib-surface-draw [(scale)]="viewControl.scale"

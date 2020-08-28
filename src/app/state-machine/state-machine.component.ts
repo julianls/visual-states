@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { Location } from '@angular/common';
 import { IDrawable } from 'my-libs/base-draw';
 import { ViewControl, SurfaceData } from 'my-libs/surface-draw';
 import { MainStateMachine } from '../applogic/statemachine/main-state-machine';
@@ -26,6 +27,11 @@ import { ZoomOutCommand } from '../applogic/statemachine/commands/zoom-out-comma
 import { CleanupUncompletedCommand } from '../applogic/statemachine/commands/cleanup-uncompleted-command';
 import { CheckDraggedCommand } from '../applogic/statemachine/commands/check-dragged-command';
 import { SaveCommand } from '../applogic/statemachine/commands/save-command';
+import { UndoCommand } from '../applogic/statemachine/commands/undo-command';
+import { RedoCommand } from '../applogic/statemachine/commands/redo-command';
+import { CanDoCommand } from '../applogic/statemachine/commands/can-do-command';
+import { AddStateCommand } from '../applogic/statemachine/commands/add-state-command';
+import { AddTransitionCommand } from '../applogic/statemachine/commands/add-transition-command';
 
 @Component({
   selector: 'app-state-machine',
@@ -38,7 +44,7 @@ export class StateMachineComponent implements OnInit {
   public commandsData: CommandsData;
   public stateMachine: MainStateMachine = new MainStateMachine();
 
-  constructor(private dataService: AppDataService) {
+  constructor(private dataService: AppDataService, private location: Location) {
     this.commandsData = new CommandsData(this.dataService, this.viewControl, null, this.drawItems);
     this.commandsData.isRequesting = true;
   }
@@ -46,6 +52,10 @@ export class StateMachineComponent implements OnInit {
   ngOnInit(): void {
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
     this.initData(new StateMachineModel());
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   private initData(model: StateMachineModel): void {
@@ -72,6 +82,8 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('zoom-area', new ZoomAreaCommand(this.commandsData));
     this.stateMachine.registerCommand('has-focus', new HasFocusCommand(this.commandsData));
     this.stateMachine.registerCommand('no-focus', new NoFocusCommand(this.commandsData));
+    this.stateMachine.registerCommand('no-focus', new NoFocusCommand(this.commandsData));
+    this.stateMachine.registerCommand('no-focus', new NoFocusCommand(this.commandsData));
 
     this.stateMachine.registerCommand('delete', new DeleteCommand(this.commandsData));
     this.stateMachine.registerCommand('zoom-all', new ZoomAllCommand(this.commandsData));
@@ -80,6 +92,11 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('cleanup-uncompleted', new CleanupUncompletedCommand(this.commandsData));
     this.stateMachine.registerCommand('check-dragged', new CheckDraggedCommand(this.commandsData));
     this.stateMachine.registerCommand('save', new SaveCommand(this.commandsData));
+    this.stateMachine.registerCommand('undo', new UndoCommand(this.commandsData));
+    this.stateMachine.registerCommand('redo', new RedoCommand(this.commandsData));
+    this.stateMachine.registerCommand('can-do', new CanDoCommand(this.commandsData));
+    this.stateMachine.registerCommand('add-state', new AddStateCommand(this.commandsData));
+    this.stateMachine.registerCommand('add-transition', new AddTransitionCommand(this.commandsData));
   }
 
   loadDrawItems(): void {
@@ -114,5 +131,28 @@ export class StateMachineComponent implements OnInit {
 
   onWheel(data: SurfaceData): void {
     this.stateMachine.onevent('wheel', data);
+  }
+
+  @HostListener('document:keydown.control.s')
+  onSave(): void {
+    this.stateMachine.onevent('save', null);
+  }
+
+  canUndo(): boolean {
+    return this.stateMachine.executeCommand('can-do', true);
+  }
+
+  @HostListener('document:keydown.control.z')
+  onUndo(): void {
+    this.stateMachine.onevent('undo', null);
+  }
+
+  canRedo(): boolean {
+    return this.stateMachine.executeCommand('can-do', false);
+  }
+
+  @HostListener('document:keydown.control.shift.z')
+  onRedo(): void {
+    this.stateMachine.onevent('redo', null);
   }
 }

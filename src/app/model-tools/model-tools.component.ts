@@ -23,7 +23,7 @@ export class ModelToolsComponent implements OnInit {
   }
 
   isAddStateState(): boolean {
-    return this.stateMachine.activeState.name === 'new-state';
+    return this.stateMachine.activeState.name === 'new-state-state';
   }
 
   onAddStateState(): void {
@@ -31,7 +31,7 @@ export class ModelToolsComponent implements OnInit {
   }
 
   isAddTransitionState(): boolean {
-    return this.stateMachine.activeState.name === 'new-transition';
+    return this.stateMachine.activeState.name === 'new-transition-state';
   }
 
   onAddTransitionState(): void {

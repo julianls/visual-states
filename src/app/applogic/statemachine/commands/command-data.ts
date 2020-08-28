@@ -5,6 +5,8 @@ import { IDrawable } from 'my-libs/base-draw';
 import { StateMachineModel } from '../../datamodel/state-machine';
 import { AppDataService } from '../../../app-data.service';
 import { ItemsContainer } from '../../datamodel/items-container';
+import { StateDraw } from '../../drawable/state-draw';
+import { TransitionDraw } from '../../drawable/transition-draw';
 
 export class CommandsData {
     public instructionSet: InstructionSet = new InstructionSet();
@@ -24,5 +26,17 @@ export class CommandsData {
 
     public invalidateModelDrawing(): void {
         this.viewControl.invalidate();
+    }
+
+    public reloadDrawItems(): void {
+        this.drawItems.splice(0);
+        for (const s of this.model.states){
+            this.drawItems.push(new StateDraw(this.model, s));
+        }
+
+        for (const t of this.model.transitions){
+            this.drawItems.push(new TransitionDraw(this.model, t));
+        }
+        this.invalidateModelDrawing();
     }
 }

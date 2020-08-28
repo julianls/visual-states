@@ -19,4 +19,8 @@ export class ItemsContainer {
       this.transitions.push(item);
     }
   }
+
+  hasItems(): boolean {
+    return this.states.length > 0 || this.transitions.length > 0;
+  }
 }
