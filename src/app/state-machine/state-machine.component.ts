@@ -32,6 +32,9 @@ import { RedoCommand } from '../applogic/statemachine/commands/redo-command';
 import { CanDoCommand } from '../applogic/statemachine/commands/can-do-command';
 import { AddStateCommand } from '../applogic/statemachine/commands/add-state-command';
 import { AddTransitionCommand } from '../applogic/statemachine/commands/add-transition-command';
+import { SetMachinePropertiesCommand } from '../applogic/statemachine/commands/set-machine-properties';
+import { SetStatePropertiesCommand } from '../applogic/statemachine/commands/set-state-properties';
+import { SetTransitionPropertiesCommand } from '../applogic/statemachine/commands/set-transition-properties';
 
 @Component({
   selector: 'app-state-machine',
@@ -97,6 +100,9 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('can-do', new CanDoCommand(this.commandsData));
     this.stateMachine.registerCommand('add-state', new AddStateCommand(this.commandsData));
     this.stateMachine.registerCommand('add-transition', new AddTransitionCommand(this.commandsData));
+    this.stateMachine.registerCommand('set-machine-properties', new SetMachinePropertiesCommand(this.commandsData));
+    this.stateMachine.registerCommand('set-state-properties', new SetStatePropertiesCommand(this.commandsData));
+    this.stateMachine.registerCommand('set-transition-properties', new SetTransitionPropertiesCommand(this.commandsData));
   }
 
   loadDrawItems(): void {

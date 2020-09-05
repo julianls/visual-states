@@ -2,6 +2,7 @@ import { CommandsData } from '../statemachine/commands/command-data';
 import { AppBaseInstruction } from './app-base-instruction';
 import { TransitionModel } from '../datamodel/transition';
 import { Point } from 'my-libs/base-geometry';
+import { Guid } from '../common/guid';
 
 export class AddTransitionInstruction extends AppBaseInstruction {
   constructor(public x: number, public y: number) {
@@ -10,6 +11,7 @@ export class AddTransitionInstruction extends AppBaseInstruction {
 
   public execute(commandsData: CommandsData): void {
     const transition: TransitionModel = new TransitionModel();
+    transition.id = Guid.newGuid();
     transition.positionSource = new Point(this.x, this.y);
     transition.positionTarget = new Point(this.x + 10, this.y);
     transition.editState = 1;

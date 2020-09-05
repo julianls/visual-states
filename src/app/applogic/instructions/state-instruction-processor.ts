@@ -9,8 +9,24 @@ import { DeleteTransitionInstruction } from './delete-transition-instruction';
 import { DeleteStateInstruction } from './delete-state-instruction';
 import { AddTransitionInstruction } from './add-transition-instruction';
 import { AddStateInstruction } from './add-state-instruction';
+import { StateMachineModel } from '../datamodel/state-machine';
+import { UpdateTransitionInstruction } from './update-transition-instruction';
+import { UpdateStateInstruction } from './update-state-instruction';
+import { UpdateMachineInstruction } from './update-machine-instruction';
 
 export class ModelInstructionProcessor implements InstructionProcessor {
+  static createUpdateTransitionInstruction(target: TransitionModel, data: TransitionModel): Instruction {
+    return new UpdateTransitionInstruction(target, data);
+  }
+
+  static createUpdateStateInstruction(target: StateModel, data: StateModel): Instruction {
+    return new UpdateStateInstruction(target, data);
+  }
+
+  static createUpdateMachineInstruction(target: StateMachineModel, data: StateMachineModel): Instruction {
+    return new UpdateMachineInstruction(target, data);
+  }
+
   static createMoveTransitionInstruction(transition: TransitionModel, x: number, y: number): Instruction {
     return new MoveTransitionInstruction(transition, x, y);
   }

@@ -29,3 +29,8 @@ __exportStar(require('./interfaces/line'), exports);
 __exportStar(require('./point'), exports);
 __exportStar(require('./line'), exports);
 __exportStar(require('./rect'), exports);
+__exportStar(require('./matrices/matrix'), exports);
+__exportStar(require('./extensions/common-extensions'), exports);
+__exportStar(require('./extensions/point-extensions'), exports);
+__exportStar(require('./extensions/line-extensions'), exports);
+__exportStar(require('./extensions/polygon-extensions'), exports);

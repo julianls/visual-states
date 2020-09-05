@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { Point } from './point';
 export declare class Rect {
     x: number;
     y: number;

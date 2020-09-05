@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppMaterialModule } from './material-module';
+import { FormsModule } from '@angular/forms';
 
 import { SurfaceDrawModule } from 'my-libs/surface-draw';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +22,7 @@ import { ModelPropertiesComponent } from './model-properties/model-properties.co
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     AppMaterialModule,
     SurfaceDrawModule,

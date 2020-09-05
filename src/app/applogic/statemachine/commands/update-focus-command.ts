@@ -3,6 +3,7 @@ import { IBaseCommand } from 'my-libs/state-machine';
 import { SurfaceData } from 'my-libs/surface-draw';
 import { StateModel } from '../../datamodel/state';
 import { TransitionModel } from '../../datamodel/transition';
+import { PointExtensions } from 'my-libs/base-geometry';
 
 export class UpdateFocusCommand implements IBaseCommand {
   constructor(private commandsData: CommandsData) {
@@ -16,14 +17,14 @@ export class UpdateFocusCommand implements IBaseCommand {
     let nearestTransition: TransitionModel = null;
 
     for (const t of this.commandsData.model.transitions){
-      const distStart = this.distance(t.positionSource.x, t.positionSource.y, data.modelPoint.x, data.modelPoint.y);
+      const distStart = PointExtensions.distance(t.positionSource, data.modelPoint);
       if (distStart < viewStep && distStart < minDist){
         minDist = distStart;
         nearestTransition = t;
         nearestTransition.editState = 0;
       }
 
-      const distEnd = this.distance(t.positionTarget.x, t.positionTarget.y, data.modelPoint.x, data.modelPoint.y);
+      const distEnd = PointExtensions.distance(t.positionTarget, data.modelPoint);
       if (distEnd < viewStep && distEnd < minDist){
         minDist = distEnd;
         nearestTransition = t;
@@ -32,7 +33,7 @@ export class UpdateFocusCommand implements IBaseCommand {
     }
 
     for (const s of this.commandsData.model.states){
-      const dist = this.distance(s.position.x, s.position.y, data.modelPoint.x, data.modelPoint.y);
+      const dist = PointExtensions.distance(s.position, data.modelPoint);
       if (dist < 100 && nearestTransition === null){
         minDist = dist;
         nearestState = s;
@@ -52,11 +53,5 @@ export class UpdateFocusCommand implements IBaseCommand {
     this.commandsData.invalidateModelDrawing();
 
     return true;
-  }
-
-  private distance(x: number, y: number, x1: number, y1: number): number {
-    const v1 = x - x1;
-    const v2 = y - y1;
-    return Math.sqrt((v1 * v1) + (v2 * v2));
   }
 }

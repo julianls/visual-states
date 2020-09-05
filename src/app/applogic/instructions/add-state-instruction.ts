@@ -2,6 +2,7 @@ import { CommandsData } from '../statemachine/commands/command-data';
 import { AppBaseInstruction } from './app-base-instruction';
 import { StateModel } from '../datamodel/state';
 import { Point } from 'my-libs/base-geometry';
+import { Guid } from '../common/guid';
 
 export class AddStateInstruction extends AppBaseInstruction {
   constructor(public x: number, public y: number) {
@@ -10,6 +11,7 @@ export class AddStateInstruction extends AppBaseInstruction {
 
   public execute(commandsData: CommandsData): void {
     const state: StateModel = new StateModel();
+    state.id = Guid.newGuid();
     state.position = new Point(this.x, this.y);
     commandsData.model.states.push(state);
   }

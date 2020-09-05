@@ -1,1 +1,74 @@
-<p>model-properties works!</p>
+<mat-expansion-panel class="model-panel">
+    <mat-expansion-panel-header collapsedHeight="36px" expandedHeight="36px">
+        <mat-panel-title>
+            Properties
+        </mat-panel-title>
+        <!--<mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description>-->
+    </mat-expansion-panel-header>
+    <div *ngIf="!isEdit()">
+        <div>
+            <h4>{{getProperties()}}</h4>
+        </div>
+        <button *ngIf="isEditable" mat-icon-button (click)="onEdit()" matTooltip="Edit">
+            <mat-icon aria-label="Edit">edit</mat-icon>
+        </button>
+    </div>
+    <div class="container" *ngIf="isEdit()">
+        <div *ngIf="objectType === 0">
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="id" [(ngModel)]="machineProperties.id" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="name" [(ngModel)]="machineProperties.name" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <textarea matInput placeholder="metadata" [(ngModel)]="machineProperties.metadata"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="objectType === 1">
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="id" [(ngModel)]="stateProperties.id" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="name" [(ngModel)]="stateProperties.name" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <textarea matInput placeholder="metadata" [(ngModel)]="stateProperties.metadata"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="objectType === 2">
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="name" [(ngModel)]="transitionProperties.id" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <textarea matInput placeholder="metadata" [(ngModel)]="transitionProperties.metadata"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div>
+            <button mat-icon-button (click)="onApplyEdit()" matTooltip="Apply">
+                <mat-icon aria-label="Apply">check</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onCancelEdit()" matTooltip="Cancel">
+                <mat-icon aria-label="Cancel">cancel</mat-icon>
+            </button>
+        </div>
+    </div>
+</mat-expansion-panel>

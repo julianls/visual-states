@@ -1,16 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\my-libs\\base-draw",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\app-logic",
-    "\\src\\app\\app-logic\\data-model",
-    "\\src\\app\\app-logic\\drawable",
-    "\\src\\app\\app-logic\\instructions",
-    "\\src\\app\\app-logic\\state-machine",
     "\\src\\app\\home"
   ],
-  "SelectedNode": "\\src\\app\\app-logic\\data-model\\state.ts",
   "PreviewInSolutionExplorer": false
 }
