@@ -13,6 +13,7 @@ import { StateModel } from '../applogic/datamodel/state';
 import { Point } from 'my-libs/base-geometry';
 import { TransitionModel } from '../applogic/datamodel/transition';
 import { UpdateFocusCommand } from '../applogic/statemachine/commands/update-focus-command';
+import { UpdateStateFocusCommand } from '../applogic/statemachine/commands/update-state-focus-command';
 import { UpdateActiveCommand } from '../applogic/statemachine/commands/update-active-command';
 import { MoveActiveCommand } from '../applogic/statemachine/commands/move-active-command';
 import { EndMoveActiveCommand } from '../applogic/statemachine/commands/end-move-active-command';
@@ -64,7 +65,9 @@ export class StateMachineComponent implements OnInit {
   private initData(model: StateMachineModel): void {
     model.states.push(new StateModel());
     model.states.push(new StateModel());
-    model.states[1].position = new Point(200, 0);
+    model.states[0].name = 'State 1';
+    model.states[1].name = 'State 2';
+    model.states[1].position = new Point(0, 200);
     model.transitions.push(new TransitionModel());
     model.transitions[0].sourceStateId = 0;
     model.transitions[0].targetStateId = 1;
@@ -72,12 +75,13 @@ export class StateMachineComponent implements OnInit {
     this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems);
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
     this.initCommands();
-    this.loadDrawItems();
+    this.commandsData.reloadDrawItems();
     this.commandsData.isRequesting = false;
   }
 
   private initCommands(): void {
     this.stateMachine.registerCommand('update-focus', new UpdateFocusCommand(this.commandsData));
+    this.stateMachine.registerCommand('update-state-focus', new UpdateStateFocusCommand(this.commandsData));
     this.stateMachine.registerCommand('update-active', new UpdateActiveCommand(this.commandsData));
     this.stateMachine.registerCommand('move-active', new MoveActiveCommand(this.commandsData));
     this.stateMachine.registerCommand('end-move-active', new EndMoveActiveCommand(this.commandsData));
@@ -103,16 +107,6 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('set-machine-properties', new SetMachinePropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('set-state-properties', new SetStatePropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('set-transition-properties', new SetTransitionPropertiesCommand(this.commandsData));
-  }
-
-  loadDrawItems(): void {
-    for (const s of this.commandsData.model.states){
-      this.drawItems.push(new StateDraw(this.commandsData.model, s));
-    }
-
-    for (const t of this.commandsData.model.transitions){
-      this.drawItems.push(new TransitionDraw(this.commandsData.model, t));
-    }
   }
 
   widthChanged(width: number): void {

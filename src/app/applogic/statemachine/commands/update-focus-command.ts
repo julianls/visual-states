@@ -17,14 +17,16 @@ export class UpdateFocusCommand implements IBaseCommand {
     let nearestTransition: TransitionModel = null;
 
     for (const t of this.commandsData.model.transitions){
-      const distStart = PointExtensions.distance(t.positionSource, data.modelPoint);
+      const posSource = t.sourceStateId >= 0 ? this.commandsData.model.states[t.sourceStateId].position : t.positionSource;
+      const distStart = PointExtensions.distance(posSource, data.modelPoint);
       if (distStart < viewStep && distStart < minDist){
         minDist = distStart;
         nearestTransition = t;
         nearestTransition.editState = 0;
       }
 
-      const distEnd = PointExtensions.distance(t.positionTarget, data.modelPoint);
+      const posTarget = t.targetStateId >= 0 ? this.commandsData.model.states[t.targetStateId].position : t.positionTarget;
+      const distEnd = PointExtensions.distance(posTarget, data.modelPoint);
       if (distEnd < viewStep && distEnd < minDist){
         minDist = distEnd;
         nearestTransition = t;

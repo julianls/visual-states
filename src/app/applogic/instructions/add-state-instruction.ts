@@ -12,6 +12,7 @@ export class AddStateInstruction extends AppBaseInstruction {
   public execute(commandsData: CommandsData): void {
     const state: StateModel = new StateModel();
     state.id = Guid.newGuid();
+    state.name = 'New State';
     state.position = new Point(this.x, this.y);
     commandsData.model.states.push(state);
   }

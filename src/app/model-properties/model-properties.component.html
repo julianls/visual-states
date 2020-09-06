@@ -46,6 +46,21 @@
             </div>
             <div>
                 <mat-form-field>
+                    <input matInput placeholder="type" [(ngModel)]="stateProperties.stateType" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="on entry" [(ngModel)]="stateProperties.entryActions">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="on exit" [(ngModel)]="stateProperties.exitActions">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
                     <textarea matInput placeholder="metadata" [(ngModel)]="stateProperties.metadata"></textarea>
                 </mat-form-field>
             </div>
@@ -54,6 +69,16 @@
             <div>
                 <mat-form-field>
                     <input matInput placeholder="name" [(ngModel)]="transitionProperties.id" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="condition" [(ngModel)]="transitionProperties.condition">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="actions" [(ngModel)]="transitionProperties.actions">
                 </mat-form-field>
             </div>
             <div>

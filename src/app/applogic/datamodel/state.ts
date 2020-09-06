@@ -7,8 +7,8 @@ export class StateModel {
   public metadata = '';
   public position: Point = new Point(0, 0);
   public stateType = 0;
-  public entryActions: string[] = [];
-  public exitActions: string[] = [];
+  public entryActions = '';
+  public exitActions = '';
 
   // composite state data
   public states: StateModel[] = [];

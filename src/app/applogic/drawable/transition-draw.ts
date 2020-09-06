@@ -1,11 +1,12 @@
 import { IDrawable, ISurfaceDraw } from 'my-libs/base-draw';
 import { TransitionModel } from '../datamodel/transition';
-import { StateMachineModel } from '../datamodel/state-machine';
+import { CommandsData } from '../statemachine/commands/command-data';
 
 export class TransitionDraw implements IDrawable {
-    constructor(private stateMachine: StateMachineModel,
+    constructor(private commandsData: CommandsData,
                 private transition: TransitionModel,
-                private strokeStyle: string = '#F3E5F5') {
+                private strokeStyle: string = '#F3E5F5',
+                private selectedStrokeStyle: string = '#23D18B') {
     }
 
     getLayer(): number {
@@ -13,17 +14,20 @@ export class TransitionDraw implements IDrawable {
     }
 
     draw(surface: ISurfaceDraw): void {
+      const isSelected = this.commandsData.selectedItems.transitions.indexOf(this.transition) >= 0;
+
       let sourcePos = this.transition.positionSource;
       if (this.transition.sourceStateId >= 0){
-        sourcePos = this.stateMachine.states[this.transition.sourceStateId].position;
+        sourcePos = this.commandsData.model.states[this.transition.sourceStateId].position;
       }
 
       let targetPos = this.transition.positionTarget;
       if (this.transition.targetStateId >= 0){
-        targetPos = this.stateMachine.states[this.transition.targetStateId].position;
+        targetPos = this.commandsData.model.states[this.transition.targetStateId].position;
       }
 
       surface.line(sourcePos.x, sourcePos.y,
-        targetPos.x, targetPos.y, this.strokeStyle);
+        targetPos.x, targetPos.y,
+        isSelected ? this.selectedStrokeStyle : this.strokeStyle);
     }
 }

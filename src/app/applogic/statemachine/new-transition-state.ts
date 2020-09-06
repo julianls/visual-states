@@ -11,11 +11,11 @@ export class NewTransitionState extends CompositeState {
     this.addExitState();
 
     this.addTransition('move', 'entry', 'focus-state', '');
-    this.addTransition('down', 'focus-state', 'add-transition', 'update-focus');
+    this.addTransition('down', 'focus-state', 'add-transition', 'update-state-focus');
     this.addTransition('up', 'add-transition', 'finish-transition', 'add-transition');
 
     this.addTransition('move', 'finish-transition', 'finish-transition', 'move-active');
-    this.addTransition('down', 'finish-transition', 'finish-transition', 'update-focus');
+    this.addTransition('down', 'finish-transition', 'finish-transition', 'update-state-focus');
     this.addTransition('up', 'finish-transition', 'focus-state', 'end-move-active');
 
     this.addTransition('wheel', 'focus-state', 'focus-state', 'zoom-area');

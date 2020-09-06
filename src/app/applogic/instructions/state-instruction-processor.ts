@@ -27,8 +27,8 @@ export class ModelInstructionProcessor implements InstructionProcessor {
     return new UpdateMachineInstruction(target, data);
   }
 
-  static createMoveTransitionInstruction(transition: TransitionModel, x: number, y: number): Instruction {
-    return new MoveTransitionInstruction(transition, x, y);
+  static createMoveTransitionInstruction(transition: TransitionModel, focusStateId: number, x: number, y: number): Instruction {
+    return new MoveTransitionInstruction(transition, focusStateId, x, y);
   }
 
   static createMoveStateInstruction(state: StateModel, x: number, y: number): Instruction {

@@ -31,11 +31,11 @@ export class CommandsData {
     public reloadDrawItems(): void {
         this.drawItems.splice(0);
         for (const s of this.model.states){
-            this.drawItems.push(new StateDraw(this.model, s));
+            this.drawItems.push(new StateDraw(this, s));
         }
 
         for (const t of this.model.transitions){
-            this.drawItems.push(new TransitionDraw(this.model, t));
+            this.drawItems.push(new TransitionDraw(this, t));
         }
         this.invalidateModelDrawing();
     }

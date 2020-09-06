@@ -32,7 +32,7 @@ export class ModelEditState extends CompositeState {
 
     this.addTransition('move', 'modify', 'modify', 'move-active');
     this.addTransition('escape', 'modify', 'focus', 'cleanup-uncompleted');
-    this.addTransition('up', 'modify', 'focus', 'end-move-active');
+    this.addTransition('up', 'modify', 'focus', 'end-move-active', 'update-state-focus');
 
     this.addTransition('move', 'movearea', 'movearea', 'move-area');
     this.addTransition('up', 'movearea', 'focus');

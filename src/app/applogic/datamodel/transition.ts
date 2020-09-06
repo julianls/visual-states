@@ -3,12 +3,12 @@ import { Point } from 'my-libs/base-geometry';
 export class TransitionModel  {
     public id = '';
     public metadata = '';
-    public sourceStateId = 0;
-    public targetStateId = 0;
+    public sourceStateId = -1;
+    public targetStateId = -1;
     public positionSource: Point = new Point(0, 0);
     public positionTarget: Point = new Point(0, 0);
     public condition = '';
-    public actions: string[] = [];
+    public actions = '';
 
     public editState = 0;
 

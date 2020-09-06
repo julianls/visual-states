@@ -14,8 +14,14 @@ export class EndMoveActiveCommand implements IBaseCommand {
       this.commandsData.instructionSet.execute(moveStateInstruction);
     }
 
+    let focusStateId = -1;
+    if (this.commandsData.focusItems.states.length > 0){
+      focusStateId = this.commandsData.model.states.indexOf(this.commandsData.focusItems.states[0]);
+    }
+
     for (const t of this.commandsData.selectedItems.transitions){
-      const moveTransitionInstruction = ModelInstructionProcessor.createMoveTransitionInstruction(t, data.modelPoint.x, data.modelPoint.y);
+      const moveTransitionInstruction = ModelInstructionProcessor.createMoveTransitionInstruction(t, focusStateId,
+        data.modelPoint.x, data.modelPoint.y);
       this.commandsData.instructionSet.execute(moveTransitionInstruction);
     }
 
