@@ -15,6 +15,7 @@ export class ModelEditState extends CompositeState {
     this.addTransition('move', 'entry', 'focus');
     this.addTransition('move', 'focus', 'focus', 'update-focus');
     this.addTransition('down', 'focus', 'focus-down', 'update-focus');
+    this.addTransition('dblclick', 'focus', 'focus', 'change-root');
     this.addTransition('wheel', 'focus', 'focus', 'zoom-area');
     this.addTransition('delete', 'focus', 'focus', 'delete');
     this.addTransition('zoom-all', 'focus', 'focus', 'zoom-all');

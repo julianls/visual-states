@@ -1,4 +1,4 @@
-import { IPoint } from '..';
+import { IPoint } from '../interfaces/point';
 import { Point } from '../point';
 import { Matrix } from '../matrices/matrix';
 export declare class PointExtensions {

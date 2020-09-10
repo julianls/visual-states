@@ -14,7 +14,7 @@ export class UpdateStateFocusCommand implements IBaseCommand {
     let minDist = viewStep;
     let nearestState: StateModel = null;
 
-    for (const s of this.commandsData.model.states){
+    for (const s of this.commandsData.activeRoot.states){
       const dist = PointExtensions.distance(s.position, data.modelPoint);
       if (dist < 100){
         minDist = dist;

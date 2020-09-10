@@ -36,6 +36,7 @@ import { AddTransitionCommand } from '../applogic/statemachine/commands/add-tran
 import { SetMachinePropertiesCommand } from '../applogic/statemachine/commands/set-machine-properties';
 import { SetStatePropertiesCommand } from '../applogic/statemachine/commands/set-state-properties';
 import { SetTransitionPropertiesCommand } from '../applogic/statemachine/commands/set-transition-properties';
+import { ChangeRootCommand } from '../applogic/statemachine/commands/change-root-command';
 
 @Component({
   selector: 'app-state-machine',
@@ -65,7 +66,9 @@ export class StateMachineComponent implements OnInit {
   private initData(model: StateMachineModel): void {
     model.states.push(new StateModel());
     model.states.push(new StateModel());
+    model.states[0].id = '1';
     model.states[0].name = 'State 1';
+    model.states[1].id = '2';
     model.states[1].name = 'State 2';
     model.states[1].position = new Point(0, 200);
     model.transitions.push(new TransitionModel());
@@ -107,6 +110,7 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('set-machine-properties', new SetMachinePropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('set-state-properties', new SetStatePropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('set-transition-properties', new SetTransitionPropertiesCommand(this.commandsData));
+    this.stateMachine.registerCommand('change-root', new ChangeRootCommand(this.commandsData));
   }
 
   widthChanged(width: number): void {
@@ -154,5 +158,10 @@ export class StateMachineComponent implements OnInit {
   @HostListener('document:keydown.control.shift.z')
   onRedo(): void {
     this.stateMachine.onevent('redo', null);
+  }
+
+  dblclick(): void {
+    const data: SurfaceData = null;
+    this.stateMachine.onevent('dblclick', data);
   }
 }

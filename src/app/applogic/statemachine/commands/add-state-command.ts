@@ -13,7 +13,7 @@ export class AddStateCommand implements IBaseCommand {
 
     this.commandsData.instructionSet.execute(addStateInstruction);
 
-    const newState = this.commandsData.model.states[this.commandsData.model.states.length - 1];
+    const newState = this.commandsData.activeRoot.states[this.commandsData.activeRoot.states.length - 1];
 
     this.commandsData.instructionSet.setBreak();
     this.commandsData.selectedItems.clear();

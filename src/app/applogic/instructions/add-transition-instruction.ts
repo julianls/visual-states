@@ -15,7 +15,7 @@ export class AddTransitionInstruction extends AppBaseInstruction {
     transition.positionSource = new Point(this.x, this.y);
     transition.positionTarget = new Point(this.x + 10, this.y);
     transition.editState = 1;
-    commandsData.model.transitions.push(transition);
+    commandsData.activeRoot.transitions.push(transition);
   }
 
   public undo(commandsData: CommandsData): void {

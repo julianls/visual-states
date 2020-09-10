@@ -8,7 +8,10 @@ export class DeleteStateInstruction extends AppBaseInstruction {
   }
 
   public execute(commandsData: CommandsData): void {
-
+    const index = commandsData.activeRoot.states.indexOf(this.state, 0);
+    if (index > -1) {
+      commandsData.activeRoot.states.splice(index, 1);
+    }
   }
 
   public undo(commandsData: CommandsData): void {

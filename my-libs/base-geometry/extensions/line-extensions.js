@@ -3,15 +3,19 @@ Object.defineProperty(exports, '__esModule', { value: true });
 exports.LineExtensions = void 0;
 var line_1 = require('../line');
 var point_1 = require('../point');
+var point_extensions_1 = require('./point-extensions');
 var LineExtensions = /** @class */ (function () {
   function LineExtensions() {}
   LineExtensions.distance = function (line, pt) {
     return LineExtensions.distanceXY(line.first.x, line.first.y, line.second.x, line.second.y, pt.x, pt.y);
   };
-  LineExtensions.distanceXY = function (x, y, x1, y1, x2, y2) {
-    var v1 = x - x1;
-    var v2 = y - y1;
-    return Math.sqrt(v1 * v1 + v2 * v2);
+  LineExtensions.distanceXY = function (lsX, lsY, leX, leY, x, y) {
+    var ptProject = LineExtensions.getPointProjectionOnSegment(
+      new point_1.Point(x, y),
+      new point_1.Point(lsX, lsY),
+      new point_1.Point(leX, leY),
+    );
+    return point_extensions_1.PointExtensions.distanceXY(x, y, ptProject.x, ptProject.y);
   };
   LineExtensions.transform = function (line, matrix) {
     var pos1 = new point_1.Point(
@@ -34,6 +38,15 @@ var LineExtensions = /** @class */ (function () {
     var x = (m * toProject.y + toProject.x - m * b) / (m * m + 1);
     var y = (m * m * toProject.y + m * toProject.x + b) / (m * m + 1);
     return new point_1.Point(x, y);
+  };
+  LineExtensions.getPointProjectionOnSegment = function (p, a, b) {
+    var atob = { x: b.x - a.x, y: b.y - a.y };
+    var atop = { x: p.x - a.x, y: p.y - a.y };
+    var len = atob.x * atob.x + atob.y * atob.y;
+    var dot = atop.x * atob.x + atop.y * atob.y;
+    var t = Math.min(1, Math.max(0, dot / len));
+    dot = (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+    return new point_1.Point(a.x + atob.x * t, a.y + atob.y * t);
   };
   LineExtensions.lineIntersect = function (A, B, E, F, infinite) {
     var x = 0;

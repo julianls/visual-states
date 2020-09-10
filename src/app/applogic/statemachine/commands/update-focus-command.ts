@@ -3,7 +3,7 @@ import { IBaseCommand } from 'my-libs/state-machine';
 import { SurfaceData } from 'my-libs/surface-draw';
 import { StateModel } from '../../datamodel/state';
 import { TransitionModel } from '../../datamodel/transition';
-import { PointExtensions } from 'my-libs/base-geometry';
+import { PointExtensions, LineExtensions, Line } from 'my-libs/base-geometry';
 
 export class UpdateFocusCommand implements IBaseCommand {
   constructor(private commandsData: CommandsData) {
@@ -16,25 +16,34 @@ export class UpdateFocusCommand implements IBaseCommand {
     let nearestState: StateModel = null;
     let nearestTransition: TransitionModel = null;
 
-    for (const t of this.commandsData.model.transitions){
-      const posSource = t.sourceStateId >= 0 ? this.commandsData.model.states[t.sourceStateId].position : t.positionSource;
+    for (const t of this.commandsData.activeRoot.transitions){
+      const posSource = t.sourceStateId >= 0 ? this.commandsData.activeRoot.states[t.sourceStateId].position : t.positionSource;
       const distStart = PointExtensions.distance(posSource, data.modelPoint);
       if (distStart < viewStep && distStart < minDist){
         minDist = distStart;
         nearestTransition = t;
         nearestTransition.editState = 0;
-      }
+      } else {
+        const posTarget = t.targetStateId >= 0 ? this.commandsData.activeRoot.states[t.targetStateId].position : t.positionTarget;
+        const distEnd = PointExtensions.distance(posTarget, data.modelPoint);
+        if (distEnd < viewStep && distEnd < minDist){
+          minDist = distEnd;
+          nearestTransition = t;
+          nearestTransition.editState = 1;
+        } else {
+          const line = new Line(posSource, posTarget);
+          const distLine = LineExtensions.distance(line, data.modelPoint);
 
-      const posTarget = t.targetStateId >= 0 ? this.commandsData.model.states[t.targetStateId].position : t.positionTarget;
-      const distEnd = PointExtensions.distance(posTarget, data.modelPoint);
-      if (distEnd < viewStep && distEnd < minDist){
-        minDist = distEnd;
-        nearestTransition = t;
-        nearestTransition.editState = 1;
+          if (distLine < viewStep && distLine < minDist){
+            minDist = distLine;
+            nearestTransition = t;
+            nearestTransition.editState = 2;
+          }
+        }
       }
     }
 
-    for (const s of this.commandsData.model.states){
+    for (const s of this.commandsData.activeRoot.states){
       const dist = PointExtensions.distance(s.position, data.modelPoint);
       if (dist < 100 && nearestTransition === null){
         minDist = dist;

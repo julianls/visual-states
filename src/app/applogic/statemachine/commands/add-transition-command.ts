@@ -13,7 +13,18 @@ export class AddTransitionCommand implements IBaseCommand {
 
     this.commandsData.instructionSet.execute(addTransitionInstruction);
 
-    const newTransition = this.commandsData.model.transitions[this.commandsData.model.transitions.length - 1];
+    const newTransition = this.commandsData.activeRoot.transitions[this.commandsData.activeRoot.transitions.length - 1];
+
+    let focusStateId = -1;
+    if (this.commandsData.focusItems.states.length > 0){
+      focusStateId = this.commandsData.activeRoot.states.indexOf(this.commandsData.focusItems.states[0]);
+      newTransition.editState = 0;
+
+      const moveTransitionInstruction = ModelInstructionProcessor.createMoveTransitionInstruction(newTransition, focusStateId,
+        data.modelPoint.x, data.modelPoint.y);
+      this.commandsData.instructionSet.execute(moveTransitionInstruction);
+    }
+
     newTransition.editState = 1;
 
     this.commandsData.instructionSet.setBreak();

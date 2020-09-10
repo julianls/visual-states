@@ -18,7 +18,8 @@
                    (up)="onUp($event)"
                    (wheelRotate)="onWheel($event)"
                    [drawAxises]="true"
-                   [drawItems]="drawItems">
+                   [drawItems]="drawItems"
+                   (dblclick)="dblclick()">
   </lib-surface-draw>
 </div>
 <app-model-tools [stateMachine]="stateMachine"></app-model-tools>

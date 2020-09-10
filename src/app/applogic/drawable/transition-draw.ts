@@ -18,12 +18,12 @@ export class TransitionDraw implements IDrawable {
 
       let sourcePos = this.transition.positionSource;
       if (this.transition.sourceStateId >= 0){
-        sourcePos = this.commandsData.model.states[this.transition.sourceStateId].position;
+        sourcePos = this.commandsData.activeRoot.states[this.transition.sourceStateId].position;
       }
 
       let targetPos = this.transition.positionTarget;
       if (this.transition.targetStateId >= 0){
-        targetPos = this.commandsData.model.states[this.transition.targetStateId].position;
+        targetPos = this.commandsData.activeRoot.states[this.transition.targetStateId].position;
       }
 
       surface.line(sourcePos.x, sourcePos.y,
