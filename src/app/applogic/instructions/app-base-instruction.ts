@@ -9,4 +9,8 @@ export abstract class AppBaseInstruction extends Instruction {
   public abstract execute(commandsData: CommandsData): void;
   public abstract undo(commandsData: CommandsData): void;
   public abstract preRedo(commandsData: CommandsData): void;
+
+  public agregate(instruction: Instruction): boolean {
+    return false;
+  }
 }

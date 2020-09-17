@@ -3,8 +3,12 @@ import { AppBaseInstruction } from './app-base-instruction';
 import { TransitionModel } from '../datamodel/transition';
 
 export class UpdateTransitionInstruction extends AppBaseInstruction {
+  private backup: TransitionModel;
+
   constructor(private target: TransitionModel, private source: TransitionModel) {
     super('UpdateTransition', 'data: string', 'description: string', 'timestamp: string');
+    this.backup = new TransitionModel();
+    this.backup.copyProperties(this.target);
   }
 
   public execute(commandsData: CommandsData): void {
@@ -12,7 +16,7 @@ export class UpdateTransitionInstruction extends AppBaseInstruction {
   }
 
   public undo(commandsData: CommandsData): void {
-
+    this.target.copyProperties(this.backup);
   }
 
   public preRedo(commandsData: CommandsData): void {

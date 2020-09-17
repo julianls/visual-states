@@ -25,6 +25,7 @@ export class EndMoveActiveCommand implements IBaseCommand {
       this.commandsData.instructionSet.execute(moveTransitionInstruction);
     }
 
+    this.commandsData.instructionSet.setBreak();
     this.commandsData.invalidateModelDrawing();
 
     return true;

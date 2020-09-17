@@ -15,7 +15,7 @@ export class DeleteStateInstruction extends AppBaseInstruction {
   }
 
   public undo(commandsData: CommandsData): void {
-
+    commandsData.activeRoot.states.push(this.state);
   }
 
   public preRedo(commandsData: CommandsData): void {

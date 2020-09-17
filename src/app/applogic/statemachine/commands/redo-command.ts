@@ -8,7 +8,7 @@ export class RedoCommand implements IBaseCommand {
 
   public execute(data: any): boolean {
     this.commandsData.instructionSet.redo();
-    this.commandsData.invalidateModelDrawing();
+    this.commandsData.reloadDrawItems();
     return true;
   }
 }

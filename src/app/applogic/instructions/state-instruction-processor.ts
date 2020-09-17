@@ -73,6 +73,9 @@ export class ModelInstructionProcessor implements InstructionProcessor {
   }
 
   public aggregate(instruction: Instruction, prevInstruction: Instruction): boolean {
+    if ((instruction as AppBaseInstruction).agregate !== undefined){
+      return  (instruction as AppBaseInstruction).agregate(prevInstruction);
+    }
     return false;
   }
 }

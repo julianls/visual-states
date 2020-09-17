@@ -8,7 +8,7 @@ export class UndoCommand implements IBaseCommand {
 
   public execute(data: any): boolean {
     this.commandsData.instructionSet.undo();
-    this.commandsData.invalidateModelDrawing();
+    this.commandsData.reloadDrawItems();
     return true;
   }
 }

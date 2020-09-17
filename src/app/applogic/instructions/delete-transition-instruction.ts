@@ -15,7 +15,7 @@ export class DeleteTransitionInstruction extends AppBaseInstruction {
   }
 
   public undo(commandsData: CommandsData): void {
-
+    commandsData.activeRoot.transitions.push(this.transition);
   }
 
   public preRedo(commandsData: CommandsData): void {
