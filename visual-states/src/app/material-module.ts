@@ -2,7 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
-//import { ClipboardModule } from '@angular/cdk/clipboard';
+// import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -43,7 +43,7 @@ import { MatTreeModule } from '@angular/material/tree';
   exports: [
     CdkTableModule,
     CdkTreeModule,
-    //ClipboardModule,
+    // ClipboardModule,
     DragDropModule,
     MatAutocompleteModule,
     MatBadgeModule,
