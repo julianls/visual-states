@@ -4,6 +4,7 @@ import { AppMaterialModule } from './material-module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { declarations } from './core';
 import { SurfaceDrawModule } from 'my-libs/surface-draw';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +20,8 @@ import { ModelPropertiesComponent } from './model-properties/model-properties.co
     HomeComponent,
     StateMachineComponent,
     ModelToolsComponent,
-    ModelPropertiesComponent
+    ModelPropertiesComponent,
+    declarations
   ],
   imports: [
     BrowserModule,

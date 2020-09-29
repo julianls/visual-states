@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using VisState.Shared;
 
 namespace VisState.Get
 {
@@ -25,9 +26,20 @@ namespace VisState.Get
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "{ \"text\": \"This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.\" }"
-                : $"{{ \"text\": \"Hello, {name}. This HTTP triggered function executed successfully.\" }}";
+            var user = StaticWebAppsAuth.Parse(req);
+
+            string responseMessage;
+
+            if(user != null && user.Identity.IsAuthenticated)
+            {
+                responseMessage = $"{{ \"text\": \"Hello, {user.Identity.Name}. This HTTP triggered function executed successfully.\" }}";
+            }
+            else
+            {
+                responseMessage = string.IsNullOrEmpty(name)
+                    ? "{ \"text\": \"This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.\" }"
+                    : $"{{ \"text\": \"Hello, {name}. This HTTP triggered function executed successfully.\" }}";
+            }
 
             return new OkObjectResult(responseMessage);
         }
