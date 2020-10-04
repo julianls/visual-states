@@ -29,9 +29,8 @@ namespace VisState.Api
                 m.Id = id;
                 m.Name = "Machine" + id;
                 
-                string container = user.Identity.Name;
-                IFileClient fileClient = new AzureBlobFileClient(
-                    Environment.GetEnvironmentVariable("StorageConnectionString"));
+                string container = Utils.GetSafeContainerName(user.Identity.Name);
+                IFileClient fileClient = Utils.GetFileClient();
                 using(Stream stream = await fileClient.GetFile(container, id + ".json"))
                 using(TextReader tr = new StreamReader(stream))
                 {

@@ -26,9 +26,8 @@ namespace VisState.Api
             {
                 string id = req.Query["id"];
 
-                string container = user.Identity.Name;
-                IFileClient fileClient = new AzureBlobFileClient(
-                    Environment.GetEnvironmentVariable("StorageConnectionString"));
+                string container = Utils.GetSafeContainerName(user.Identity.Name);
+                IFileClient fileClient = Utils.GetFileClient();
                 await fileClient.DeleteFile(container, id + ".json");
 
                 return new OkResult();

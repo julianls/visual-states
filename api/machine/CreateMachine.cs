@@ -28,9 +28,8 @@ namespace VisState.Api
                 Machine m = JsonConvert.DeserializeObject<Machine>(requestBody);
 
                 // Save file
-                string container = user.Identity.Name;
-                IFileClient fileClient = new AzureBlobFileClient(
-                    Environment.GetEnvironmentVariable("StorageConnectionString"));
+                string container = Utils.GetSafeContainerName(user.Identity.Name);
+                IFileClient fileClient = Utils.GetFileClient();
                 using (MemoryStream stream = new MemoryStream(System.Text.Encoding.Default.GetBytes(m.Content)))
                 {
                     await fileClient.SaveFile(container, m.Id + ".json", stream);

@@ -26,9 +26,8 @@ namespace VisState.Api
             var user = StaticWebAppsAuth.Parse(req);
             if(user != null && user.Identity.IsAuthenticated)
             {
-                string container = user.Identity.Name;
-                IFileClient fileClient = new AzureBlobFileClient(
-                    Environment.GetEnvironmentVariable("StorageConnectionString"));
+                string container = Utils.GetSafeContainerName(user.Identity.Name);
+                IFileClient fileClient = Utils.GetFileClient();
 
                 foreach(Uri uri in await fileClient.GetChildUris(container))
                 {
