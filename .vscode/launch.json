@@ -2,6 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "runtimeExecutable": "dev",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/visual-states"
+        },
+        {
             "name": "Attach to .NET Functions",
             "type": "coreclr",
             "request": "attach",

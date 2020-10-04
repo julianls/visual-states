@@ -561,28 +561,31 @@ class SurfaceDrawComponent {
         this.stateEvent = event;
     }
     onPanStart(event) {
-        if (event.pointerType === 'touch') {
+        if (event.touches && event.touches.length > 0) {
             this.isPan = true;
-            event.preventDefault();
             this.stateEvent = event;
-            const pt = new Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+            event.preventDefault();
+            const touch = event.touches[0];
+            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.down.emit(sd);
         }
     }
     onPanMove(event) {
-        if (event.pointerType === 'touch') {
+        if (event.touches && event.touches.length > 0) {
             event.preventDefault();
-            const pt = new Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+            const touch = event.touches[0];
+            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.move.emit(sd);
         }
     }
     onPanEnd(event) {
-        if (event.pointerType === 'touch') {
+        if (event.changedTouches && event.changedTouches.length > 0) {
             this.isPan = false;
             event.preventDefault();
-            const pt = new Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+            const touch = event.changedTouches[0];
+            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.up.emit(sd);
             this.stateEvent = event;
@@ -603,7 +606,7 @@ SurfaceDrawComponent.ɵcmp = ɵɵdefineComponent({ type: SurfaceDrawComponent, s
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.canvasRef = _t.first);
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.divElement = _t.first);
     } }, hostBindings: function SurfaceDrawComponent_HostBindings(rf, ctx) { if (rf & 1) {
-        ɵɵlistener("mousedown", function SurfaceDrawComponent_mousedown_HostBindingHandler($event) { return ctx.onMousedown($event); })("mousemove", function SurfaceDrawComponent_mousemove_HostBindingHandler($event) { return ctx.onMousemove($event); })("mouseup", function SurfaceDrawComponent_mouseup_HostBindingHandler($event) { return ctx.onMouseup($event); })("panstart", function SurfaceDrawComponent_panstart_HostBindingHandler($event) { return ctx.onPanStart($event); })("panmove", function SurfaceDrawComponent_panmove_HostBindingHandler($event) { return ctx.onPanMove($event); })("panend", function SurfaceDrawComponent_panend_HostBindingHandler($event) { return ctx.onPanEnd($event); })("mousewheel", function SurfaceDrawComponent_mousewheel_HostBindingHandler($event) { return ctx.onMousewheel($event); });
+        ɵɵlistener("mousedown", function SurfaceDrawComponent_mousedown_HostBindingHandler($event) { return ctx.onMousedown($event); })("mousemove", function SurfaceDrawComponent_mousemove_HostBindingHandler($event) { return ctx.onMousemove($event); })("mouseup", function SurfaceDrawComponent_mouseup_HostBindingHandler($event) { return ctx.onMouseup($event); })("touchstart", function SurfaceDrawComponent_touchstart_HostBindingHandler($event) { return ctx.onPanStart($event); })("touchmove", function SurfaceDrawComponent_touchmove_HostBindingHandler($event) { return ctx.onPanMove($event); })("touchend", function SurfaceDrawComponent_touchend_HostBindingHandler($event) { return ctx.onPanEnd($event); })("mousewheel", function SurfaceDrawComponent_mousewheel_HostBindingHandler($event) { return ctx.onMousewheel($event); });
     } }, inputs: { drawItems: "drawItems", drawAxises: "drawAxises", scale: "scale", offsetX: "offsetX", offsetY: "offsetY", width: "width", height: "height", switch: "switch" }, outputs: { scaleChange: "scaleChange", offsetXChange: "offsetXChange", offsetYChange: "offsetYChange", widthChange: "widthChange", heightChange: "heightChange", down: "down", move: "move", up: "up", wheelRotate: "wheelRotate" }, features: [ɵɵNgOnChangesFeature], decls: 4, vars: 0, consts: [[1, "div-root"], ["divElement", ""], [1, "canvas-main"], ["myCanvas", ""]], template: function SurfaceDrawComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0, 1);
         ɵɵelement(2, "canvas", 2, 3);
@@ -682,13 +685,13 @@ SurfaceDrawComponent.ɵcmp = ɵɵdefineComponent({ type: SurfaceDrawComponent, s
             args: ['mouseup', ['$event']]
         }], onPanStart: [{
             type: HostListener,
-            args: ['panstart', ['$event']]
+            args: ['touchstart', ['$event']]
         }], onPanMove: [{
             type: HostListener,
-            args: ['panmove', ['$event']]
+            args: ['touchmove', ['$event']]
         }], onPanEnd: [{
             type: HostListener,
-            args: ['panend', ['$event']]
+            args: ['touchend', ['$event']]
         }], onMousewheel: [{
             type: HostListener,
             args: ['mousewheel', ['$event']]

@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VisState.Shared;
+using VisState.Storage;
 
-namespace VisState.Get
+namespace VisState.Api
 {
     public static class GetMachines
     {
@@ -20,27 +21,29 @@ namespace VisState.Get
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            List<Machine> machines = new List<Machine>();
 
             var user = StaticWebAppsAuth.Parse(req);
-
-            string responseMessage;
-
             if(user != null && user.Identity.IsAuthenticated)
             {
-                responseMessage = $"{{ \"text\": \"Hello, {user.Identity.Name}. This HTTP triggered function executed successfully.\" }}";
+                string container = user.Identity.Name;
+                IFileClient fileClient = new AzureBlobFileClient(
+                    Environment.GetEnvironmentVariable("StorageConnectionString"));
+
+                foreach(Uri uri in await fileClient.GetChildUris(container))
+                {
+                    Machine m = new Machine();
+                    m.Id = uri.Segments[uri.Segments.Length - 1].ToString().Replace(".json", "");
+                    m.Name = "Machine" + m.Id;
+                    machines.Add(m);
+                }
             }
             else
             {
-                responseMessage = string.IsNullOrEmpty(name)
-                    ? "{ \"text\": \"This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.\" }"
-                    : $"{{ \"text\": \"Hello, {name}. This HTTP triggered function executed successfully.\" }}";
+                log.LogInformation("C# HTTP trigger function processed a request no logged in user.");
             }
 
+            string responseMessage = JsonConvert.SerializeObject(machines); 
             return new OkObjectResult(responseMessage);
         }
     }

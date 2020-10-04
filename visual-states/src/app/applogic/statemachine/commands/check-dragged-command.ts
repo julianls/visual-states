@@ -13,8 +13,10 @@ export class CheckDraggedCommand implements IBaseCommand {
         Math.abs(data.event.y - data.stateEvent.y) > 3;
       return isDragged;
     } else {
-      const isDragged = Math.abs(data.event.center.x - data.stateEvent.center.x) > 3 ||
-        Math.abs(data.event.center.y - data.stateEvent.center.y) > 3;
+      const touch = data.event.touches[0];
+      const initialTouch = data.stateEvent.touches[0];
+      const isDragged = Math.abs(touch.clientX - initialTouch.clientX) > 10 ||
+        Math.abs(touch.clientY - initialTouch.clientY) > 10;
       return isDragged;
     }
   }

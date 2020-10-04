@@ -930,28 +930,31 @@
             this.stateEvent = event;
         };
         SurfaceDrawComponent.prototype.onPanStart = function (event) {
-            if (event.pointerType === 'touch') {
+            if (event.touches && event.touches.length > 0) {
                 this.isPan = true;
-                event.preventDefault();
                 this.stateEvent = event;
-                var pt = new baseGeometry.Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+                event.preventDefault();
+                var touch = event.touches[0];
+                var pt = new baseGeometry.Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
                 var sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
                 this.down.emit(sd);
             }
         };
         SurfaceDrawComponent.prototype.onPanMove = function (event) {
-            if (event.pointerType === 'touch') {
+            if (event.touches && event.touches.length > 0) {
                 event.preventDefault();
-                var pt = new baseGeometry.Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+                var touch = event.touches[0];
+                var pt = new baseGeometry.Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
                 var sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
                 this.move.emit(sd);
             }
         };
         SurfaceDrawComponent.prototype.onPanEnd = function (event) {
-            if (event.pointerType === 'touch') {
+            if (event.changedTouches && event.changedTouches.length > 0) {
                 this.isPan = false;
                 event.preventDefault();
-                var pt = new baseGeometry.Point(event.center.x, event.center.y - this.divElement.nativeElement.offsetTop);
+                var touch = event.changedTouches[0];
+                var pt = new baseGeometry.Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
                 var sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
                 this.up.emit(sd);
                 this.stateEvent = event;
@@ -977,7 +980,7 @@
             }
         }, hostBindings: function SurfaceDrawComponent_HostBindings(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵlistener("mousedown", function SurfaceDrawComponent_mousedown_HostBindingHandler($event) { return ctx.onMousedown($event); })("mousemove", function SurfaceDrawComponent_mousemove_HostBindingHandler($event) { return ctx.onMousemove($event); })("mouseup", function SurfaceDrawComponent_mouseup_HostBindingHandler($event) { return ctx.onMouseup($event); })("panstart", function SurfaceDrawComponent_panstart_HostBindingHandler($event) { return ctx.onPanStart($event); })("panmove", function SurfaceDrawComponent_panmove_HostBindingHandler($event) { return ctx.onPanMove($event); })("panend", function SurfaceDrawComponent_panend_HostBindingHandler($event) { return ctx.onPanEnd($event); })("mousewheel", function SurfaceDrawComponent_mousewheel_HostBindingHandler($event) { return ctx.onMousewheel($event); });
+                i0.ɵɵlistener("mousedown", function SurfaceDrawComponent_mousedown_HostBindingHandler($event) { return ctx.onMousedown($event); })("mousemove", function SurfaceDrawComponent_mousemove_HostBindingHandler($event) { return ctx.onMousemove($event); })("mouseup", function SurfaceDrawComponent_mouseup_HostBindingHandler($event) { return ctx.onMouseup($event); })("touchstart", function SurfaceDrawComponent_touchstart_HostBindingHandler($event) { return ctx.onPanStart($event); })("touchmove", function SurfaceDrawComponent_touchmove_HostBindingHandler($event) { return ctx.onPanMove($event); })("touchend", function SurfaceDrawComponent_touchend_HostBindingHandler($event) { return ctx.onPanEnd($event); })("mousewheel", function SurfaceDrawComponent_mousewheel_HostBindingHandler($event) { return ctx.onMousewheel($event); });
             }
         }, inputs: { drawItems: "drawItems", drawAxises: "drawAxises", scale: "scale", offsetX: "offsetX", offsetY: "offsetY", width: "width", height: "height", switch: "switch" }, outputs: { scaleChange: "scaleChange", offsetXChange: "offsetXChange", offsetYChange: "offsetYChange", widthChange: "widthChange", heightChange: "heightChange", down: "down", move: "move", up: "up", wheelRotate: "wheelRotate" }, features: [i0.ɵɵNgOnChangesFeature], decls: 4, vars: 0, consts: [[1, "div-root"], ["divElement", ""], [1, "canvas-main"], ["myCanvas", ""]], template: function SurfaceDrawComponent_Template(rf, ctx) {
             if (rf & 1) {
@@ -1045,13 +1048,13 @@
                     args: ['mouseup', ['$event']]
                 }], onPanStart: [{
                     type: i0.HostListener,
-                    args: ['panstart', ['$event']]
+                    args: ['touchstart', ['$event']]
                 }], onPanMove: [{
                     type: i0.HostListener,
-                    args: ['panmove', ['$event']]
+                    args: ['touchmove', ['$event']]
                 }], onPanEnd: [{
                     type: i0.HostListener,
-                    args: ['panend', ['$event']]
+                    args: ['touchend', ['$event']]
                 }], onMousewheel: [{
                     type: i0.HostListener,
                     args: ['mousewheel', ['$event']]

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Machine } from './core';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,23 @@ export class AppDataService {
     return headers;
   }
 
-  public getMachines(): Observable<any> {
-    return this.http.get<object>(this.getUrl('GetMachines'), { headers: this.getHeaders() });
+  public getMachines(): Observable<Machine[]> {
+    return this.http.get<Machine[]>(this.getUrl('GetMachines'), { headers: this.getHeaders() });
   }
 
+  public getMachine(id: string): Observable<Machine> {
+    return this.http.get<Machine>(this.getUrl('GetMachine?id=' + id), { headers: this.getHeaders() });
+  }
+
+  public createMachine(machine: Machine): Observable<Machine> {
+    return this.http.post<Machine>(this.getUrl('CreateMachine'), machine, { headers: this.getHeaders() });
+  }
+
+  public updateMachine(machine: Machine): Observable<Machine> {
+    return this.http.post<Machine>(this.getUrl('UpdateMachine'), machine, { headers: this.getHeaders() });
+  }
+
+  public deleteMachine(id: string): Observable<Machine> {
+    return this.http.get<Machine>(this.getUrl('DeleteMachine?id=' + id), { headers: this.getHeaders() });
+  }
 }

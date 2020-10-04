@@ -2,7 +2,14 @@
     <h1>State Machines</h1>
 </mat-toolbar>
 <app-nav></app-nav>
-<button mat-raised-button color="accent" [routerLink]='["/state-machine/1"]'><mat-icon>photo_library</mat-icon><span>STATE DESIGNER</span></button>
+<button mat-raised-button color="accent" [routerLink]='["/state-machine/new"]'><mat-icon>photo_library</mat-icon><span>CREATE NEW</span></button>
 <div>
-    <h1>{{description}}</h1>
+    <mat-nav-list>
+        <mat-list-item *ngFor="let entry of machines">
+          <a matLine [routerLink]='["/state-machine/" + entry.Id]'>{{entry.Name}}</a>
+          <button mat-icon-button matTooltip="Remove Machine" (click)="removeMachine(entry)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
 </div>

@@ -37,6 +37,7 @@ import { SetMachinePropertiesCommand } from '../applogic/statemachine/commands/s
 import { SetStatePropertiesCommand } from '../applogic/statemachine/commands/set-state-properties';
 import { SetTransitionPropertiesCommand } from '../applogic/statemachine/commands/set-transition-properties';
 import { ChangeRootCommand } from '../applogic/statemachine/commands/change-root-command';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-state-machine',
@@ -44,26 +45,37 @@ import { ChangeRootCommand } from '../applogic/statemachine/commands/change-root
   styleUrls: ['./state-machine.component.scss']
 })
 export class StateMachineComponent implements OnInit {
+  public id: string;
   public drawItems: IDrawable[] = [];
   public viewControl: ViewControl = new ViewControl();
   public commandsData: CommandsData;
   public stateMachine: MainStateMachine = new MainStateMachine();
 
-  constructor(private dataService: AppDataService, private location: Location) {
+  constructor(private dataService: AppDataService, private route: ActivatedRoute, private location: Location) {
+    this.id = this.route.snapshot.paramMap.get('id');
     this.commandsData = new CommandsData(this.dataService, this.viewControl, null, this.drawItems);
     this.commandsData.isRequesting = true;
   }
 
   ngOnInit(): void {
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
-    this.initData(new StateMachineModel());
+    if (this.id === 'new'){
+      this.initNewData();
+    } else {
+      this.dataService.getMachine(this.id)
+          .subscribe(machine => {
+            const model = JSON.parse(machine.Content) as StateMachineModel;
+            this.initData(model);
+          });
+    }
   }
 
   goBack(): void {
     this.location.back();
   }
-
-  private initData(model: StateMachineModel): void {
+  private initNewData(): void {
+    const model = new StateMachineModel();
+    model.id = 'new';
     model.states.push(new StateModel());
     model.states.push(new StateModel());
     model.states[0].id = '1';
@@ -74,6 +86,11 @@ export class StateMachineComponent implements OnInit {
     model.transitions.push(new TransitionModel());
     model.transitions[0].sourceStateId = 0;
     model.transitions[0].targetStateId = 1;
+
+    this.initData(model);
+  }
+
+  private initData(model: StateMachineModel): void {
 
     this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems);
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
