@@ -64,7 +64,7 @@ export class StateMachineComponent implements OnInit {
     } else {
       this.dataService.getMachine(this.id)
           .subscribe(machine => {
-            const model = JSON.parse(machine.Content) as StateMachineModel;
+            const model = this.dataService.getMachineModel(machine.Content);
             this.initData(model);
           });
     }

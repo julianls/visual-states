@@ -15,7 +15,7 @@ export class ModelPropertiesComponent implements OnInit {
   @Input() stateMachine: StateMachine;
   @Input() isEditable = false;
 
-  public objectType = 0;
+  public objectType = -1;
   public stateProperties: StateModel;
   public transitionProperties: TransitionModel;
   public machineProperties: StateMachineModel;
@@ -32,7 +32,7 @@ export class ModelPropertiesComponent implements OnInit {
     } else if (this.commandsData.selectedItems.transitions.length === 1) {
       const transition = this.commandsData.selectedItems.transitions[0];
       return 'Transition:' + transition.id;
-    } else {
+    } else if (this.commandsData.model)  {
       return 'Machine:' + this.commandsData.model.id;
     }
   }
@@ -50,7 +50,7 @@ export class ModelPropertiesComponent implements OnInit {
       this.transitionProperties = new TransitionModel();
       this.transitionProperties.copyProperties(this.commandsData.selectedItems.transitions[0]);
       this.objectType = 2;
-    } else {
+    } else if (this.commandsData.model) {
       this.machineProperties = new StateMachineModel();
       this.machineProperties.copyProperties(this.commandsData.model);
       this.objectType = 0;

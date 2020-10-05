@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { StateModel } from './applogic/datamodel/state';
+import { StateMachineModel } from './applogic/datamodel/state-machine';
+import { TransitionModel } from './applogic/datamodel/transition';
 import { Machine } from './core';
 
 @Injectable({
@@ -32,6 +35,31 @@ export class AppDataService {
 
   public getMachine(id: string): Observable<Machine> {
     return this.http.get<Machine>(this.getUrl('GetMachine?id=' + id), { headers: this.getHeaders() });
+  }
+
+  public getMachineModel(content: string): StateMachineModel {
+    const model = JSON.parse(content);
+    this.mapSerializedContent(model);
+    const newModel = new StateMachineModel();
+    Object.assign(newModel, model);
+    return newModel;
+  }
+
+  private mapSerializedContent(state: StateModel): void {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < state.states.length; i++) {
+      this.mapSerializedContent(state.states[i]);
+      const newModel = new StateModel();
+      Object.assign(newModel, state.states[i]);
+      state.states[i] = newModel;
+    }
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < state.transitions.length; i++) {
+      const newModel = new TransitionModel();
+      Object.assign(newModel, state.transitions[i]);
+      state.transitions[i] = newModel;
+    }
   }
 
   public createMachine(machine: Machine): Observable<Machine> {
