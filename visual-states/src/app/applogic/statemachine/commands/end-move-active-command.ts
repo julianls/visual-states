@@ -14,9 +14,9 @@ export class EndMoveActiveCommand implements IBaseCommand {
       this.commandsData.instructionSet.execute(moveStateInstruction);
     }
 
-    let focusStateId = -1;
+    let focusStateId = '';
     if (this.commandsData.focusItems.states.length > 0){
-      focusStateId = this.commandsData.activeRoot.states.indexOf(this.commandsData.focusItems.states[0]);
+      focusStateId = this.commandsData.focusItems.states[0].id;
     }
 
     for (const t of this.commandsData.selectedItems.transitions){

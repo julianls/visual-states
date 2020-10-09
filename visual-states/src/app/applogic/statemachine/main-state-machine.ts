@@ -31,7 +31,7 @@ export class MainStateMachine extends StateMachine {
       this.addTransition('button-new-transition', 'new-state-state', 'new-transition-state');
       this.addTransition('escape', 'new-state-state', 'model-edit');
 
-    // edit properties state
+      // edit properties state
       this.addTransition('escape', 'edit-properties-state', 'model-edit');
 
       // set default sate

@@ -7,10 +7,10 @@ import { Instruction } from 'my-libs/base-instruction';
 export class MoveTransitionInstruction extends AppBaseInstruction {
   private oldX = 0;
   private oldY = 0;
-  private oldSid = -1;
+  private oldSid = '';
   private oldEdit = 0;
 
-  constructor(public transition: TransitionModel, public focusStateId: number, public x: number, public y: number) {
+  constructor(public transition: TransitionModel, public focusStateId: string, public x: number, public y: number) {
     super('MoveTransition', 'data: string', 'description: string', 'timestamp: string');
     this.oldEdit = this.transition.editState;
     if (this.transition.editState === 0){

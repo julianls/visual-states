@@ -26,4 +26,22 @@ export class StateModel {
     this.entryActions = source.entryActions;
     this.exitActions = source.exitActions;
   }
+
+  public findStateByName(name: string): StateModel {
+    for (const child of this.states){
+      if (child.name === name){
+        return child;
+      }
+    }
+    return null;
+  }
+
+  public findStateById(id: string): StateModel {
+    for (const child of this.states){
+      if (child.id === id){
+        return child;
+      }
+    }
+    return null;
+  }
 }

@@ -2,9 +2,10 @@ import { Point } from 'my-libs/base-geometry';
 
 export class TransitionModel  {
     public id = '';
+    public trigger = '';
     public metadata = '';
-    public sourceStateId = -1;
-    public targetStateId = -1;
+    public sourceStateId = '';
+    public targetStateId = '';
     public positionSource: Point = new Point(0, 0);
     public positionTarget: Point = new Point(0, 0);
     public condition = '';
@@ -17,6 +18,7 @@ export class TransitionModel  {
 
     public copyProperties(source: TransitionModel): void {
         this.id = source.id;
+        this.trigger = source.trigger;
         this.metadata = source.metadata;
         this.sourceStateId = source.sourceStateId;
         this.targetStateId = source.targetStateId;

@@ -1,11 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { IDrawable } from 'my-libs/base-draw';
 import { ViewControl, SurfaceData } from 'my-libs/surface-draw';
 import { MainStateMachine } from '../applogic/statemachine/main-state-machine';
 import { CommandsData } from '../applogic/statemachine/commands/command-data';
-import { StateDraw } from '../applogic/drawable/state-draw';
-import { TransitionDraw } from '../applogic/drawable/transition-draw';
 import { ModelInstructionProcessor } from '../applogic/instructions/state-instruction-processor';
 import { AppDataService } from '../app-data.service';
 import { StateMachineModel } from '../applogic/datamodel/state-machine';
@@ -37,7 +36,7 @@ import { SetMachinePropertiesCommand } from '../applogic/statemachine/commands/s
 import { SetStatePropertiesCommand } from '../applogic/statemachine/commands/set-state-properties';
 import { SetTransitionPropertiesCommand } from '../applogic/statemachine/commands/set-transition-properties';
 import { ChangeRootCommand } from '../applogic/statemachine/commands/change-root-command';
-import { ActivatedRoute } from '@angular/router';
+import { GenerateStatesCommand } from '../applogic/statemachine/commands/generate-states-command';
 
 @Component({
   selector: 'app-state-machine',
@@ -84,8 +83,8 @@ export class StateMachineComponent implements OnInit {
     model.states[1].name = 'State 2';
     model.states[1].position = new Point(0, 200);
     model.transitions.push(new TransitionModel());
-    model.transitions[0].sourceStateId = 0;
-    model.transitions[0].targetStateId = 1;
+    model.transitions[0].sourceStateId = '1';
+    model.transitions[0].targetStateId = '2';
 
     this.initData(model);
   }
@@ -128,6 +127,7 @@ export class StateMachineComponent implements OnInit {
     this.stateMachine.registerCommand('set-state-properties', new SetStatePropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('set-transition-properties', new SetTransitionPropertiesCommand(this.commandsData));
     this.stateMachine.registerCommand('change-root', new ChangeRootCommand(this.commandsData));
+    this.stateMachine.registerCommand('generate-states', new GenerateStatesCommand(this.commandsData));
   }
 
   widthChanged(width: number): void {

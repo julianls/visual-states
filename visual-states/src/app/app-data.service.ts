@@ -1,5 +1,4 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StateModel } from './applogic/datamodel/state';

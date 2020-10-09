@@ -24,6 +24,7 @@ export class ModelEditState extends CompositeState {
     this.addTransition('save', 'focus', 'focus', 'save');
     this.addTransition('undo', 'focus', 'focus', 'undo');
     this.addTransition('redo', 'focus', 'focus', 'redo');
+    this.addTransition('generate-states', 'focus', 'focus', 'generate-states');
 
     this.addTransition('move', 'focus-down', 'waitmodify', 'update-active', 'has-focus');
     this.addTransition('move', 'focus-down', 'movearea', 'update-active', 'no-focus');

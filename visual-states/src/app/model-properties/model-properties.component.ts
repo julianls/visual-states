@@ -83,4 +83,8 @@ export class ModelPropertiesComponent implements OnInit {
   public onCancelEdit(): void {
     this.stateMachine.onevent('cancel-edit', null);
   }
+
+  public onGenerate(): void {
+    this.stateMachine.onevent('generate-states', null);
+  }
 }

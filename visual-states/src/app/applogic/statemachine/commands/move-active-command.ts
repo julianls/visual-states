@@ -15,7 +15,7 @@ export class MoveActiveCommand implements IBaseCommand {
     }
 
     for (const t of this.commandsData.selectedItems.transitions){
-      const moveTransitionInstruction = ModelInstructionProcessor.createMoveTransitionInstruction(t, -1,
+      const moveTransitionInstruction = ModelInstructionProcessor.createMoveTransitionInstruction(t, '',
         data.modelPoint.x, data.modelPoint.y);
       this.commandsData.instructionSet.execute(moveTransitionInstruction);
     }

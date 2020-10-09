@@ -14,6 +14,9 @@
         <button *ngIf="isEditable" mat-icon-button (click)="onEdit()" matTooltip="Edit">
             <mat-icon aria-label="Edit">edit</mat-icon>
         </button>
+        <button *ngIf="isEditable" mat-icon-button (click)="onGenerate()" matTooltip="Generate">
+            <mat-icon aria-label="Generate">code</mat-icon>
+        </button>
     </div>
     <div class="container" *ngIf="isEdit()">
         <div *ngIf="objectType === 0">
@@ -46,7 +49,7 @@
             </div>
             <div>
                 <mat-form-field>
-                    <input matInput placeholder="type" [(ngModel)]="stateProperties.stateType" required>
+                    <input matInput placeholder="type" [(ngModel)]="stateProperties.stateType" type="number" required>
                 </mat-form-field>
             </div>
             <div>

@@ -17,13 +17,13 @@ export class TransitionDraw implements IDrawable {
       const isSelected = this.commandsData.selectedItems.transitions.indexOf(this.transition) >= 0;
 
       let sourcePos = this.transition.positionSource;
-      if (this.transition.sourceStateId >= 0){
-        sourcePos = this.commandsData.activeRoot.states[this.transition.sourceStateId].position;
+      if (this.transition.sourceStateId && this.transition.sourceStateId.length > 0){
+        sourcePos = this.commandsData.activeRoot.findStateById(this.transition.sourceStateId).position;
       }
 
       let targetPos = this.transition.positionTarget;
-      if (this.transition.targetStateId >= 0){
-        targetPos = this.commandsData.activeRoot.states[this.transition.targetStateId].position;
+      if (this.transition.targetStateId && this.transition.targetStateId.length > 0){
+        targetPos = this.commandsData.activeRoot.findStateById(this.transition.targetStateId).position;
       }
 
       surface.line(sourcePos.x, sourcePos.y,

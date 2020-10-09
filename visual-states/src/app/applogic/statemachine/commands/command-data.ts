@@ -8,12 +8,17 @@ import { ItemsContainer } from '../../datamodel/items-container';
 import { StateDraw } from '../../drawable/state-draw';
 import { TransitionDraw } from '../../drawable/transition-draw';
 import { StateModel } from '../../datamodel/state';
+import { Container } from '../../../generators/model/container';
+import { ContainerElement } from '../../../generators/model/element';
 
 export class CommandsData {
     public instructionSet: InstructionSet = new InstructionSet();
     public focusItems: ItemsContainer = new ItemsContainer();
     public selectedItems: ItemsContainer = new ItemsContainer();
     public activeRoot: StateModel = null;
+    public fileData: Container = null;
+    public activeContainerElement: ContainerElement = null;
+    public isFileView = false;
 
     public isRequesting = false;
     public activeOffset: Point = new Point(0, 0);
@@ -21,6 +26,7 @@ export class CommandsData {
     constructor(public dataService: AppDataService, public viewControl: ViewControl,
                 public model: StateMachineModel, public drawItems: IDrawable[]) {
         this.activeRoot = model;
+        this.fileData = new Container();
     }
 
     public setInstructionProcessor(processor: InstructionProcessor): void {

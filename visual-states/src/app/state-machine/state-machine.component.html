@@ -4,9 +4,10 @@
     <button (click)="onRedo()" [disabled]="!canRedo()" mat-icon-button matTooltip="Redo (Ctrl + Shift + Z)"><mat-icon aria-label="Redo">redo</mat-icon></button>
     <button (click)="onSave()" *ngIf="canUndo()" mat-icon-button matTooltip="Save (Ctrl + S)"><mat-icon aria-label="Save">save</mat-icon></button>
     <span class="fill-space"></span>
+    <button (click)="commandsData.isFileView = !commandsData.isFileView" mat-icon-button matTooltip="File/Diagram View"><mat-icon aria-label="Change View">dashboard</mat-icon></button>
     <button mat-icon-button (click)="goBack()" matTooltip="Close"><mat-icon aria-label="Close">close</mat-icon></button>
 </mat-toolbar>
-<div>
+<div *ngIf="!commandsData.isFileView">
   <lib-surface-draw [(scale)]="viewControl.scale"
                    [(offsetX)]="viewControl.offsetX"
                    [(offsetY)]="viewControl.offsetY"
@@ -22,5 +23,18 @@
                    (dblclick)="dblclick()">
   </lib-surface-draw>
 </div>
-<app-model-tools [stateMachine]="stateMachine"></app-model-tools>
-<app-model-properties [commandsData]="commandsData" [stateMachine]="stateMachine" [isEditable]="true"></app-model-properties>
+<mat-sidenav-container *ngIf="commandsData.isFileView" class="gallery-sidenav-container" >
+  <mat-sidenav #snav class="gallery-sidenav" [mode]="'side'" [opened]="true" [fixedInViewport]="false">
+    <mat-nav-list>
+      <h1>Generated Files</h1>
+      <mat-list-item *ngFor="let entry of commandsData.fileData.elements" (click)="commandsData.activeContainerElement = entry" [style.background-color]="commandsData.activeContainerElement === entry ? '#E0E0E0' : ''">
+        <p matLine>{{entry.name}}</p>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <textarea *ngIf="commandsData.activeContainerElement" class="editor-text">{{commandsData.activeContainerElement.content}}</textarea>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-model-tools *ngIf="!commandsData.isFileView" [stateMachine]="stateMachine"></app-model-tools>
+<app-model-properties *ngIf="!commandsData.isFileView" [commandsData]="commandsData" [stateMachine]="stateMachine" [isEditable]="true"></app-model-properties>
