@@ -59,7 +59,7 @@ export class StateGenerator {
         file.content += '\r\n';
         file.content += 'export class ' + stateContext.name + 'State extends StateMachine {\r\n';
         file.content += '    constructor() {\r\n';
-        file.content += '      super();\r\n';
+        file.content += '      super(\'' + stateContext.name + '\');\r\n';
         file.content += '\r\n';
     }
 
