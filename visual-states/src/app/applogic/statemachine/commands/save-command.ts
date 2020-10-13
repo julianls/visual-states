@@ -19,7 +19,7 @@ export class SaveCommand implements IBaseCommand {
     const machine: Machine = {
       Id: this.commandsData.model.id,
       Owner: '',
-      Name: '',
+      Name: this.commandsData.model.name,
       Path: '',
       Description: '',
       Content: JSON.stringify(this.commandsData.model)
@@ -31,7 +31,7 @@ export class SaveCommand implements IBaseCommand {
 
       });
     } else {
-    this.commandsData.dataService.updateMachine(machine)
+      this.commandsData.dataService.updateMachine(machine)
         .subscribe(obj => {
 
         });

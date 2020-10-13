@@ -27,8 +27,9 @@ namespace VisState.Api
                 string id = req.Query["id"];
 
                 string container = Utils.GetSafeContainerName(user.Identity.Name);
-                IFileClient fileClient = Utils.GetFileClient();
-                await fileClient.DeleteFile(container, id + ".json");
+
+                DataManager dm = Utils.GetDataManager();
+                await dm.DeleteMachine(container, id);
 
                 return new OkResult();
             }

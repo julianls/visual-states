@@ -21,20 +21,19 @@ namespace VisState.Api
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            List<Machine> machines = new List<Machine>();
+            IEnumerable<Machine> machines = new List<Machine>();
 
             var user = StaticWebAppsAuth.Parse(req);
             if(user != null && user.Identity.IsAuthenticated)
             {
                 string container = Utils.GetSafeContainerName(user.Identity.Name);
-                IFileClient fileClient = Utils.GetFileClient();
+                DataManager dm = Utils.GetDataManager();
+                machines = await dm.GetMachines(container);
 
-                foreach(Uri uri in await fileClient.GetChildUris(container))
+                foreach(var machine in machines)
                 {
-                    Machine m = new Machine();
-                    m.Id = uri.Segments[uri.Segments.Length - 1].ToString().Replace(".json", "");
-                    m.Name = "Machine" + m.Id;
-                    machines.Add(m);
+                    //Do not return full content
+                    machine.Content = "";
                 }
             }
             else

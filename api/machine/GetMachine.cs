@@ -25,18 +25,9 @@ namespace VisState.Api
             if(user != null && user.Identity.IsAuthenticated)
             {
                 string id = req.Query["id"];
-                Machine m = new Machine();
-                m.Id = id;
-                m.Name = "Machine" + id;
-                
                 string container = Utils.GetSafeContainerName(user.Identity.Name);
-                IFileClient fileClient = Utils.GetFileClient();
-                using(Stream stream = await fileClient.GetFile(container, id + ".json"))
-                using(TextReader tr = new StreamReader(stream))
-                {
-                    m.Content = await tr.ReadToEndAsync();
-                }
-                
+                DataManager dm = Utils.GetDataManager();
+                Machine m = await dm.GetMachine(container, id);
                 return new OkObjectResult(JsonConvert.SerializeObject(m));
             }
             else

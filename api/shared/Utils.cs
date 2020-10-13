@@ -16,5 +16,10 @@ namespace VisState.Shared
         {
             return new AzureBlobFileClient(Environment.GetEnvironmentVariable("StorageConnectionString"));
         }
+
+        public static DataManager GetDataManager()
+        {
+            return new DataManager(Environment.GetEnvironmentVariable("StorageConnectionString"));
+        }
     }
 }
