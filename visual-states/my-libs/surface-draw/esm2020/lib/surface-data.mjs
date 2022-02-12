@@ -1,0 +1,10 @@
+export class SurfaceData {
+    constructor(screenPoint, modelPoint, surface, event, stateEvent) {
+        this.screenPoint = screenPoint;
+        this.modelPoint = modelPoint;
+        this.surface = surface;
+        this.event = event;
+        this.stateEvent = stateEvent;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3VyZmFjZS1kYXRhLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vcHJvamVjdHMvc3VyZmFjZS1kcmF3L3NyYy9saWIvc3VyZmFjZS1kYXRhLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdBLE1BQU0sT0FBTyxXQUFXO0lBQ3RCLFlBQW1CLFdBQWtCLEVBQVMsVUFBaUIsRUFDNUMsT0FBcUIsRUFDckIsS0FBVSxFQUFTLFVBQWU7UUFGbEMsZ0JBQVcsR0FBWCxXQUFXLENBQU87UUFBUyxlQUFVLEdBQVYsVUFBVSxDQUFPO1FBQzVDLFlBQU8sR0FBUCxPQUFPLENBQWM7UUFDckIsVUFBSyxHQUFMLEtBQUssQ0FBSztRQUFTLGVBQVUsR0FBVixVQUFVLENBQUs7SUFDckQsQ0FBQztDQUNGIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUG9pbnQgfSBmcm9tICdteS1saWJzL2Jhc2UtZ2VvbWV0cnknO1xyXG5pbXBvcnQgeyBJU3VyZmFjZURyYXcgfSBmcm9tICdteS1saWJzL2Jhc2UtZHJhdyc7XHJcblxyXG5leHBvcnQgY2xhc3MgU3VyZmFjZURhdGEge1xyXG4gIGNvbnN0cnVjdG9yKHB1YmxpYyBzY3JlZW5Qb2ludDogUG9pbnQsIHB1YmxpYyBtb2RlbFBvaW50OiBQb2ludCxcclxuICAgICAgICAgICAgICBwdWJsaWMgc3VyZmFjZTogSVN1cmZhY2VEcmF3LFxyXG4gICAgICAgICAgICAgIHB1YmxpYyBldmVudDogYW55LCBwdWJsaWMgc3RhdGVFdmVudDogYW55KSB7XHJcbiAgfVxyXG59XHJcbiJdfQ==

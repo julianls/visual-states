@@ -7,6 +7,10 @@ export declare class SurfaceDrawComponent implements OnInit, OnChanges, AfterVie
     canvasRef: ElementRef;
     divElement: any;
     drawItems: IDrawable[];
+    SurfaceFill: string;
+    SurfaceStroke: string;
+    drawAxises: boolean;
+    drawDebug: boolean;
     private offscreenCanvas;
     private scaleValue;
     private offsetXValue;
@@ -14,7 +18,6 @@ export declare class SurfaceDrawComponent implements OnInit, OnChanges, AfterVie
     private widthValue;
     private heightValue;
     private switchValue;
-    drawAxises: boolean;
     scaleChange: EventEmitter<any>;
     offsetXChange: EventEmitter<any>;
     offsetYChange: EventEmitter<any>;
@@ -30,6 +33,8 @@ export declare class SurfaceDrawComponent implements OnInit, OnChanges, AfterVie
     up: EventEmitter<SurfaceData>;
     wheelRotate: EventEmitter<SurfaceData>;
     private stateEvent;
+    private controlTop;
+    private controlLeft;
     constructor();
     set scale(val: number);
     get scale(): number;
@@ -60,14 +65,18 @@ export declare class SurfaceDrawComponent implements OnInit, OnChanges, AfterVie
     toDeviceScale(val: number): number;
     toDeviceX(val: number): number;
     toDeviceY(val: number): number;
+    private calcOffsets;
     getCenter(): Point;
     drawData(): void;
+    getFill(): string;
+    getGridStroke(): string;
     drawOffscreen(): void;
     toLogical(point: Point): Point;
     drawHorizontalRuler(): void;
     drawVerticalRuler(): void;
     drawRulerText(x: number, y: number, horizontal: boolean): void;
     drawGrid(): void;
+    private drawDebugInfo;
     private drawCoordinateSystem;
     onMousedown(event: any): void;
     onMousemove(event: MouseEvent): void;
@@ -76,6 +85,6 @@ export declare class SurfaceDrawComponent implements OnInit, OnChanges, AfterVie
     protected onPanMove(event: any): void;
     protected onPanEnd(event: any): void;
     onMousewheel(event: any): void;
-    static ɵfac: i0.ɵɵFactoryDef<SurfaceDrawComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<SurfaceDrawComponent, "lib-surface-draw", never, { "drawItems": "drawItems"; "drawAxises": "drawAxises"; "scale": "scale"; "offsetX": "offsetX"; "offsetY": "offsetY"; "width": "width"; "height": "height"; "switch": "switch"; }, { "scaleChange": "scaleChange"; "offsetXChange": "offsetXChange"; "offsetYChange": "offsetYChange"; "widthChange": "widthChange"; "heightChange": "heightChange"; "down": "down"; "move": "move"; "up": "up"; "wheelRotate": "wheelRotate"; }, never, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<SurfaceDrawComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<SurfaceDrawComponent, "lib-surface-draw", never, { "drawItems": "drawItems"; "SurfaceFill": "SurfaceFill"; "SurfaceStroke": "SurfaceStroke"; "drawAxises": "drawAxises"; "drawDebug": "drawDebug"; "scale": "scale"; "offsetX": "offsetX"; "offsetY": "offsetY"; "width": "width"; "height": "height"; "switch": "switch"; }, { "scaleChange": "scaleChange"; "offsetXChange": "offsetXChange"; "offsetYChange": "offsetYChange"; "widthChange": "widthChange"; "heightChange": "heightChange"; "down": "down"; "move": "move"; "up": "up"; "wheelRotate": "wheelRotate"; }, never, never>;
 }

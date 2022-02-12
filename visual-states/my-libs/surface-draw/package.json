@@ -2,20 +2,30 @@
   "name": "surface-draw",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^10.0.6",
-    "@angular/core": "^10.0.6"
+    "@angular/common": "^13.0.1",
+    "@angular/core": "^13.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"
   },
-  "main": "bundles/surface-draw.umd.js",
-  "module": "fesm2015/surface-draw.js",
-  "es2015": "fesm2015/surface-draw.js",
-  "esm2015": "esm2015/surface-draw.js",
-  "fesm2015": "fesm2015/surface-draw.js",
+  "module": "fesm2015/surface-draw.mjs",
+  "es2020": "fesm2020/surface-draw.mjs",
+  "esm2020": "esm2020/surface-draw.mjs",
+  "fesm2020": "fesm2020/surface-draw.mjs",
+  "fesm2015": "fesm2015/surface-draw.mjs",
   "typings": "surface-draw.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
-  }
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./surface-draw.d.ts",
+      "esm2020": "./esm2020/surface-draw.mjs",
+      "es2020": "./fesm2020/surface-draw.mjs",
+      "es2015": "./fesm2015/surface-draw.mjs",
+      "node": "./fesm2015/surface-draw.mjs",
+      "default": "./fesm2020/surface-draw.mjs"
+    }
+  },
+  "sideEffects": false
 }

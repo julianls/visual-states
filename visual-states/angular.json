@@ -28,14 +28,13 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/app-theme.scss",
               "src/styles.scss"
             ],
             "scripts": ["my-libs/base-draw/index.js",
               "my-libs/base-geometry/index.js",
               "my-libs/base-instruction/index.js",
-              "my-libs/state-machine/index.js",
-              "my-libs/surface-draw/bundles/surface-draw.umd.js"],
+              "my-libs/state-machine/index.js"],
               "allowedCommonJsDependencies": [
                 "my-libs/base-geometry",
                 "my-libs/base-instruction",

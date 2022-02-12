@@ -13,6 +13,8 @@ import { HomeComponent } from './home/home.component';
 import { StateMachineComponent } from './state-machine/state-machine.component';
 import { ModelToolsComponent } from './model-tools/model-tools.component';
 import { ModelPropertiesComponent } from './model-properties/model-properties.component';
+import { ThemeService, AppThemes } from './theme.service';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -35,4 +37,15 @@ import { ModelPropertiesComponent } from './model-properties/model-properties.co
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(overlayContainer: OverlayContainer, private themeService: ThemeService) {
+    themeService.getTheme().subscribe(data => {
+      if (data === AppThemes.light) {
+        overlayContainer.getContainerElement().classList.remove(AppThemes.dark);
+      }
+      else{
+        overlayContainer.getContainerElement().classList.add(AppThemes.dark);
+      }
+    });
+  }
+}

@@ -4,6 +4,7 @@
     <button (click)="onRedo()" [disabled]="!canRedo()" mat-icon-button matTooltip="Redo (Ctrl + Shift + Z)"><mat-icon aria-label="Redo">redo</mat-icon></button>
     <button (click)="onSave()" *ngIf="canUndo()" mat-icon-button matTooltip="Save (Ctrl + S)"><mat-icon aria-label="Save">save</mat-icon></button>
     <span class="fill-space"></span>
+    <button (click)="themeService.toggleTheme()" mat-icon-button matTooltip="App/Theme"><mat-icon aria-label="Change Theme">flaky</mat-icon></button>
     <button (click)="commandsData.isFileView = !commandsData.isFileView" mat-icon-button matTooltip="File/Diagram View"><mat-icon aria-label="Change View">dashboard</mat-icon></button>
     <button mat-icon-button (click)="goBack()" matTooltip="Close"><mat-icon aria-label="Close">close</mat-icon></button>
 </mat-toolbar>
@@ -20,6 +21,8 @@
                    (wheelRotate)="onWheel($event)"
                    [drawAxises]="true"
                    [drawItems]="drawItems"
+                   [SurfaceFill]="themeService.getSurfaceFill()"
+                   [SurfaceStroke]="themeService.getSurfaceStroke()"
                    (dblclick)="dblclick()">
   </lib-surface-draw>
 </div>

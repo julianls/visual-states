@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppDataService } from '../app-data.service';
 import { Machine } from '../core';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent implements OnInit {
   public isRequesting = false;
   public machines: Machine[] = [];
 
-  constructor(private service: AppDataService) { }
+  constructor(private service: AppDataService, public themeService: ThemeService) { }
 
   ngOnInit(): void {
     this.service.getMachines().subscribe(result => {

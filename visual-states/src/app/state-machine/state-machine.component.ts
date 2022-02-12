@@ -37,6 +37,7 @@ import { SetStatePropertiesCommand } from '../applogic/statemachine/commands/set
 import { SetTransitionPropertiesCommand } from '../applogic/statemachine/commands/set-transition-properties';
 import { ChangeRootCommand } from '../applogic/statemachine/commands/change-root-command';
 import { GenerateStatesCommand } from '../applogic/statemachine/commands/generate-states-command';
+import { ThemeService } from '../theme.service';
 
 @Component({
   selector: 'app-state-machine',
@@ -50,7 +51,8 @@ export class StateMachineComponent implements OnInit {
   public commandsData: CommandsData;
   public stateMachine: MainStateMachine = new MainStateMachine();
 
-  constructor(private dataService: AppDataService, private route: ActivatedRoute, private location: Location) {
+  constructor(private dataService: AppDataService, private route: ActivatedRoute,
+              private location: Location, public themeService: ThemeService) {
     this.id = this.route.snapshot.paramMap.get('id');
     this.commandsData = new CommandsData(this.dataService, this.viewControl, null, this.drawItems);
     this.commandsData.isRequesting = true;

@@ -1,4 +1,5 @@
-import { ɵɵdefineInjectable, ɵsetClassMetadata, Injectable, EventEmitter, ɵɵdefineComponent, ɵɵstaticViewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵlistener, ɵɵNgOnChangesFeature, ɵɵelementStart, ɵɵelement, ɵɵelementEnd, Component, ViewChild, Input, Output, HostListener, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import * as i0 from '@angular/core';
+import { Injectable, EventEmitter, Component, ViewChild, Input, Output, HostListener, NgModule } from '@angular/core';
 import { Point } from 'my-libs/base-geometry';
 
 class SurfaceData {
@@ -46,26 +47,25 @@ class ViewControl {
 class SurfaceDrawService {
     constructor() { }
 }
-SurfaceDrawService.ɵfac = function SurfaceDrawService_Factory(t) { return new (t || SurfaceDrawService)(); };
-SurfaceDrawService.ɵprov = ɵɵdefineInjectable({ token: SurfaceDrawService, factory: SurfaceDrawService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(SurfaceDrawService, [{
-        type: Injectable,
-        args: [{
-                providedIn: 'root'
-            }]
-    }], function () { return []; }, null); })();
+SurfaceDrawService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawService, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+SurfaceDrawService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawService, decorators: [{
+            type: Injectable,
+            args: [{
+                    providedIn: 'root'
+                }]
+        }], ctorParameters: function () { return []; } });
 
-const _c0 = ["myCanvas"];
-const _c1 = ["divElement"];
 class SurfaceDrawComponent {
     constructor() {
+        this.drawAxises = false;
+        this.drawDebug = false;
         this.scaleValue = 1;
         this.offsetXValue = 0;
         this.offsetYValue = 0;
         this.widthValue = 0;
         this.heightValue = 0;
         this.switchValue = false;
-        this.drawAxises = false;
         this.scaleChange = new EventEmitter();
         this.offsetXChange = new EventEmitter();
         this.offsetYChange = new EventEmitter();
@@ -83,6 +83,8 @@ class SurfaceDrawComponent {
         this.wheelRotate = new EventEmitter();
         // @Output() click: EventEmitter<Point> = new EventEmitter<Point>();
         this.stateEvent = null;
+        this.controlTop = 0;
+        this.controlLeft = 0;
     }
     set scale(val) {
         if (this.scaleValue !== val) {
@@ -237,7 +239,7 @@ class SurfaceDrawComponent {
         x = this.toDeviceX(x);
         y = this.toDeviceY(y);
         /// color for background
-        this.context.fillStyle = '#303030';
+        this.context.fillStyle = this.getFill(); // '#303030';
         /// get width of text
         const oldFont = this.context.font;
         if (font) {
@@ -277,10 +279,24 @@ class SurfaceDrawComponent {
             this.toDeviceScale(this.offsetY) -
             this.toDeviceScale(val);
     }
+    calcOffsets() {
+        let el = this.canvasRef.nativeElement;
+        this.controlTop = 0;
+        this.controlLeft = 0;
+        while (el) {
+            // console.log('parentElement => ' + el.parentElement);
+            this.controlTop += el.offsetTop;
+            this.controlLeft += el.offsetLeft;
+            el = el.offsetParent;
+        }
+        // console.log('top => ' + this.contolTop);
+        // console.log('left => ' + this.contolLeft);
+    }
     getCenter() {
+        this.calcOffsets();
         const el = this.divElement.nativeElement;
-        const centerX = el.clientWidth / 2.0 - el.offsetLeft / 2.0;
-        const centerY = el.clientHeight / 2.0 - el.offsetTop / 2.0;
+        const centerX = el.clientWidth / 2.0; // - this.controlLeft / 2.0;
+        const centerY = el.clientHeight / 2.0; // - this.controlTop / 2.0;
         return new Point(centerX, centerY);
     }
     drawData() {
@@ -290,28 +306,38 @@ class SurfaceDrawComponent {
             ctx.drawImage(this.offscreenCanvas, 0, 0);
         }
     }
+    getFill() {
+        return this.SurfaceFill; // this.divElement.nativeElement.style.background;
+    }
+    getGridStroke() {
+        return this.SurfaceStroke; // this.divElement.nativeElement.style.color;
+    }
     drawOffscreen() {
         if (!this.canvasValid) {
             this.canvasValid = true;
             this.center = this.getCenter();
             this.context.lineWidth = 1;
             this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-            this.context.fillStyle = '#303030';
+            this.context.fillStyle = this.getFill(); // '#303030';
             this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
             if (this.drawItems != null) {
+                this.context.save();
                 for (const entry of this.drawItems) {
                     if (entry.getLayer() < 0) {
                         entry.draw(this);
                     }
                 }
+                this.context.restore();
             }
             this.drawGrid();
             if (this.drawItems != null) {
+                this.context.save();
                 for (const entry of this.drawItems) {
                     if (entry.getLayer() >= 0) {
                         entry.draw(this);
                     }
                 }
+                this.context.restore();
             }
             this.drawVerticalRuler();
             this.drawHorizontalRuler();
@@ -337,8 +363,9 @@ class SurfaceDrawComponent {
         while (step > 15) {
             step *= 0.40;
         }
+        this.context.save();
         this.context.lineWidth = 0.25;
-        this.context.strokeStyle = '#FFFFFF';
+        this.context.strokeStyle = this.getGridStroke(); // '#FFFFFF';
         this.context.beginPath();
         let len = 10;
         let cnt = 0;
@@ -347,7 +374,7 @@ class SurfaceDrawComponent {
             this.context.lineTo(x, len + 10);
             cnt++;
             if (len === 10) {
-                this.drawRulerText(x, 0, true);
+                this.drawRulerText(x, 5, true);
                 cnt = 0;
                 len = 5;
             }
@@ -362,7 +389,7 @@ class SurfaceDrawComponent {
             this.context.lineTo(x, len + 10);
             cnt++;
             if (len === 10) {
-                this.drawRulerText(x, 0, true);
+                this.drawRulerText(x, 5, true);
                 cnt = 0;
                 len = 5;
             }
@@ -372,6 +399,7 @@ class SurfaceDrawComponent {
         }
         this.context.closePath();
         this.context.stroke();
+        this.context.restore();
     }
     drawVerticalRuler() {
         const center = new Point(this.center.x, this.center.y);
@@ -384,8 +412,9 @@ class SurfaceDrawComponent {
         while (step > 15) {
             step *= 0.40;
         }
+        this.context.save();
         this.context.lineWidth = 0.25;
-        this.context.strokeStyle = '#FFFFFF';
+        this.context.strokeStyle = this.getGridStroke(); // '#FFFFFF';
         this.context.beginPath();
         let len = 10;
         let cnt = 0;
@@ -419,6 +448,7 @@ class SurfaceDrawComponent {
         }
         this.context.closePath();
         this.context.stroke();
+        this.context.restore();
     }
     drawRulerText(x, y, horizontal) {
         const logicalPt = this.toLogical(new Point(x, y));
@@ -429,7 +459,7 @@ class SurfaceDrawComponent {
         const width = this.context.measureText(text).width;
         ///// draw background rect assuming height of font
         // this.context.fillRect(x - width / 2.0, y - 6, width, 12);
-        this.context.fillStyle = '#FFFFFF4A';
+        this.context.fillStyle = this.getGridStroke(); // '#FFFFFF4A';
         if (horizontal) {
             this.context.textBaseline = 'top';
         }
@@ -455,8 +485,10 @@ class SurfaceDrawComponent {
         while (step > 15) {
             step *= 0.40;
         }
+        this.context.save();
+        this.context.globalAlpha = 0.4;
         this.context.lineWidth = 0.25;
-        this.context.strokeStyle = '#3C3C3C';
+        this.context.strokeStyle = this.getGridStroke(); // '#3C3C3C';
         // this.context.strokeStyle = "#FFFFFF";
         this.context.setLineDash([4, 2]);
         this.context.beginPath();
@@ -480,7 +512,7 @@ class SurfaceDrawComponent {
         this.context.stroke();
         step = step * 5;
         this.context.lineWidth = 0.5;
-        this.context.strokeStyle = '#3C3C3C';
+        this.context.strokeStyle = this.getGridStroke(); // '#3C3C3C';
         this.context.beginPath();
         const hw = 0.5;
         const w = 1;
@@ -503,6 +535,7 @@ class SurfaceDrawComponent {
         this.context.closePath();
         this.context.stroke();
         this.context.setLineDash([]);
+        this.context.globalAlpha = 1;
         // this.context.strokeStyle = "#000000";
         // this.context.lineWidth = 1;
         // this.context.beginPath();
@@ -511,9 +544,25 @@ class SurfaceDrawComponent {
         if (this.drawAxises) {
             this.drawCoordinateSystem();
         }
+        if (this.drawDebug) {
+            this.drawDebugInfo();
+        }
+        this.context.restore();
+    }
+    drawDebugInfo() {
+        const posX = 100;
+        let posY = 100;
+        this.context.fillStyle = this.getGridStroke();
+        this.context.fillText('position => x:'
+            + this.pointerPosition.x + ', y:'
+            + this.pointerPosition.y, posX, posY);
+        posY += 20;
+        this.context.fillText('top/left => top:'
+            + this.controlTop + ', left:'
+            + this.controlLeft, posX, posY);
     }
     drawCoordinateSystem() {
-        const calcHeight = this.height - this.divElement.nativeElement.offsetTop;
+        const calcHeight = this.height - this.controlTop;
         this.context.lineWidth = 1;
         this.context.strokeStyle = '#00BFA5';
         this.context.beginPath();
@@ -537,7 +586,7 @@ class SurfaceDrawComponent {
         if (this.isPan) {
             return;
         }
-        const pt = new Point(event.clientX, event.clientY - this.divElement.nativeElement.offsetTop);
+        const pt = new Point(event.clientX - this.controlLeft, event.clientY - this.controlTop);
         this.stateEvent = event;
         const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
         this.down.emit(sd);
@@ -546,7 +595,7 @@ class SurfaceDrawComponent {
         if (this.isPan) {
             return;
         }
-        const pt = new Point(event.clientX, event.clientY - this.divElement.nativeElement.offsetTop);
+        const pt = new Point(event.clientX - this.controlLeft, event.clientY - this.controlTop);
         const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
         this.pointerPosition = sd.modelPoint;
         this.move.emit(sd);
@@ -555,7 +604,7 @@ class SurfaceDrawComponent {
         if (this.isPan) {
             return;
         }
-        const pt = new Point(event.clientX, event.clientY - this.divElement.nativeElement.offsetTop);
+        const pt = new Point(event.clientX - this.controlLeft, event.clientY - this.controlTop);
         const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
         this.up.emit(sd);
         this.stateEvent = event;
@@ -566,7 +615,7 @@ class SurfaceDrawComponent {
             this.stateEvent = event;
             event.preventDefault();
             const touch = event.touches[0];
-            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
+            const pt = new Point(touch.clientX - this.controlLeft, touch.clientY - this.controlTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.down.emit(sd);
         }
@@ -575,7 +624,7 @@ class SurfaceDrawComponent {
         if (event.touches && event.touches.length > 0) {
             event.preventDefault();
             const touch = event.touches[0];
-            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
+            const pt = new Point(touch.clientX - this.controlLeft, touch.clientY - this.controlTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.move.emit(sd);
         }
@@ -585,131 +634,128 @@ class SurfaceDrawComponent {
             this.isPan = false;
             event.preventDefault();
             const touch = event.changedTouches[0];
-            const pt = new Point(touch.clientX, touch.clientY - this.divElement.nativeElement.offsetTop);
+            const pt = new Point(touch.clientX - this.controlLeft, touch.clientY - this.controlTop);
             const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
             this.up.emit(sd);
             this.stateEvent = event;
         }
     }
     onMousewheel(event) {
-        const pt = new Point(event.clientX, event.clientY - this.divElement.nativeElement.offsetTop);
+        const pt = new Point(event.clientX - this.controlLeft, event.clientY - this.controlTop);
         const sd = new SurfaceData(pt, this.toLogical(pt), this, event, this.stateEvent);
         this.wheelRotate.emit(sd);
     }
 }
-SurfaceDrawComponent.ɵfac = function SurfaceDrawComponent_Factory(t) { return new (t || SurfaceDrawComponent)(); };
-SurfaceDrawComponent.ɵcmp = ɵɵdefineComponent({ type: SurfaceDrawComponent, selectors: [["lib-surface-draw"]], viewQuery: function SurfaceDrawComponent_Query(rf, ctx) { if (rf & 1) {
-        ɵɵstaticViewQuery(_c0, true);
-        ɵɵstaticViewQuery(_c1, true);
-    } if (rf & 2) {
-        var _t;
-        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.canvasRef = _t.first);
-        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.divElement = _t.first);
-    } }, hostBindings: function SurfaceDrawComponent_HostBindings(rf, ctx) { if (rf & 1) {
-        ɵɵlistener("mousedown", function SurfaceDrawComponent_mousedown_HostBindingHandler($event) { return ctx.onMousedown($event); })("mousemove", function SurfaceDrawComponent_mousemove_HostBindingHandler($event) { return ctx.onMousemove($event); })("mouseup", function SurfaceDrawComponent_mouseup_HostBindingHandler($event) { return ctx.onMouseup($event); })("touchstart", function SurfaceDrawComponent_touchstart_HostBindingHandler($event) { return ctx.onPanStart($event); })("touchmove", function SurfaceDrawComponent_touchmove_HostBindingHandler($event) { return ctx.onPanMove($event); })("touchend", function SurfaceDrawComponent_touchend_HostBindingHandler($event) { return ctx.onPanEnd($event); })("mousewheel", function SurfaceDrawComponent_mousewheel_HostBindingHandler($event) { return ctx.onMousewheel($event); });
-    } }, inputs: { drawItems: "drawItems", drawAxises: "drawAxises", scale: "scale", offsetX: "offsetX", offsetY: "offsetY", width: "width", height: "height", switch: "switch" }, outputs: { scaleChange: "scaleChange", offsetXChange: "offsetXChange", offsetYChange: "offsetYChange", widthChange: "widthChange", heightChange: "heightChange", down: "down", move: "move", up: "up", wheelRotate: "wheelRotate" }, features: [ɵɵNgOnChangesFeature], decls: 4, vars: 0, consts: [[1, "div-root"], ["divElement", ""], [1, "canvas-main"], ["myCanvas", ""]], template: function SurfaceDrawComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelementStart(0, "div", 0, 1);
-        ɵɵelement(2, "canvas", 2, 3);
-        ɵɵelementEnd();
-    } }, styles: [".canvas-main[_ngcontent-%COMP%] {\n    touch-action: none !important;\n  }\n\n  .div-root[_ngcontent-%COMP%] {\n    position: fixed;\n    width: 100%;\n    height: 100%;\n  }"] });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(SurfaceDrawComponent, [{
-        type: Component,
-        args: [{
-                selector: 'lib-surface-draw',
-                template: `
+SurfaceDrawComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawComponent, deps: [], target: i0.ɵɵFactoryTarget.Component });
+SurfaceDrawComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.0.1", type: SurfaceDrawComponent, selector: "lib-surface-draw", inputs: { drawItems: "drawItems", SurfaceFill: "SurfaceFill", SurfaceStroke: "SurfaceStroke", drawAxises: "drawAxises", drawDebug: "drawDebug", scale: "scale", offsetX: "offsetX", offsetY: "offsetY", width: "width", height: "height", switch: "switch" }, outputs: { scaleChange: "scaleChange", offsetXChange: "offsetXChange", offsetYChange: "offsetYChange", widthChange: "widthChange", heightChange: "heightChange", down: "down", move: "move", up: "up", wheelRotate: "wheelRotate" }, host: { listeners: { "mousedown": "onMousedown($event)", "mousemove": "onMousemove($event)", "mouseup": "onMouseup($event)", "touchstart": "onPanStart($event)", "touchmove": "onPanMove($event)", "touchend": "onPanEnd($event)", "mousewheel": "onMousewheel($event)" } }, viewQueries: [{ propertyName: "canvasRef", first: true, predicate: ["myCanvas"], descendants: true, static: true }, { propertyName: "divElement", first: true, predicate: ["divElement"], descendants: true, static: true }], usesOnChanges: true, ngImport: i0, template: `
+  <div #divElement class="div-root">
+    <canvas #myCanvas class="canvas-main">
+    </canvas>
+  </div>
+  `, isInline: true, styles: [".canvas-main{touch-action:none!important}.div-root{width:100%;height:100%}\n"] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawComponent, decorators: [{
+            type: Component,
+            args: [{
+                    selector: 'lib-surface-draw',
+                    template: `
   <div #divElement class="div-root">
     <canvas #myCanvas class="canvas-main">
     </canvas>
   </div>
   `,
-                styles: [`
+                    styles: [`
   .canvas-main {
     touch-action: none !important;
   }
 
   .div-root {
-    position: fixed;
     width: 100%;
     height: 100%;
   }
   `]
-            }]
-    }], function () { return []; }, { canvasRef: [{
-            type: ViewChild,
-            args: ['myCanvas', { static: true }]
-        }], divElement: [{
-            type: ViewChild,
-            args: ['divElement', { static: true }]
-        }], drawItems: [{
-            type: Input
-        }], drawAxises: [{
-            type: Input
-        }], scaleChange: [{
-            type: Output
-        }], offsetXChange: [{
-            type: Output
-        }], offsetYChange: [{
-            type: Output
-        }], widthChange: [{
-            type: Output
-        }], heightChange: [{
-            type: Output
-        }], down: [{
-            type: Output
-        }], move: [{
-            type: Output
-        }], up: [{
-            type: Output
-        }], wheelRotate: [{
-            type: Output
-        }], scale: [{
-            type: Input
-        }], offsetX: [{
-            type: Input
-        }], offsetY: [{
-            type: Input
-        }], width: [{
-            type: Input
-        }], height: [{
-            type: Input
-        }], switch: [{
-            type: Input
-        }], onMousedown: [{
-            type: HostListener,
-            args: ['mousedown', ['$event']]
-        }], onMousemove: [{
-            type: HostListener,
-            args: ['mousemove', ['$event']]
-        }], onMouseup: [{
-            type: HostListener,
-            args: ['mouseup', ['$event']]
-        }], onPanStart: [{
-            type: HostListener,
-            args: ['touchstart', ['$event']]
-        }], onPanMove: [{
-            type: HostListener,
-            args: ['touchmove', ['$event']]
-        }], onPanEnd: [{
-            type: HostListener,
-            args: ['touchend', ['$event']]
-        }], onMousewheel: [{
-            type: HostListener,
-            args: ['mousewheel', ['$event']]
-        }] }); })();
+                }]
+        }], ctorParameters: function () { return []; }, propDecorators: { canvasRef: [{
+                type: ViewChild,
+                args: ['myCanvas', { static: true }]
+            }], divElement: [{
+                type: ViewChild,
+                args: ['divElement', { static: true }]
+            }], drawItems: [{
+                type: Input
+            }], SurfaceFill: [{
+                type: Input
+            }], SurfaceStroke: [{
+                type: Input
+            }], drawAxises: [{
+                type: Input
+            }], drawDebug: [{
+                type: Input
+            }], scaleChange: [{
+                type: Output
+            }], offsetXChange: [{
+                type: Output
+            }], offsetYChange: [{
+                type: Output
+            }], widthChange: [{
+                type: Output
+            }], heightChange: [{
+                type: Output
+            }], down: [{
+                type: Output
+            }], move: [{
+                type: Output
+            }], up: [{
+                type: Output
+            }], wheelRotate: [{
+                type: Output
+            }], scale: [{
+                type: Input
+            }], offsetX: [{
+                type: Input
+            }], offsetY: [{
+                type: Input
+            }], width: [{
+                type: Input
+            }], height: [{
+                type: Input
+            }], switch: [{
+                type: Input
+            }], onMousedown: [{
+                type: HostListener,
+                args: ['mousedown', ['$event']]
+            }], onMousemove: [{
+                type: HostListener,
+                args: ['mousemove', ['$event']]
+            }], onMouseup: [{
+                type: HostListener,
+                args: ['mouseup', ['$event']]
+            }], onPanStart: [{
+                type: HostListener,
+                args: ['touchstart', ['$event']]
+            }], onPanMove: [{
+                type: HostListener,
+                args: ['touchmove', ['$event']]
+            }], onPanEnd: [{
+                type: HostListener,
+                args: ['touchend', ['$event']]
+            }], onMousewheel: [{
+                type: HostListener,
+                args: ['mousewheel', ['$event']]
+            }] } });
 
 class SurfaceDrawModule {
 }
-SurfaceDrawModule.ɵmod = ɵɵdefineNgModule({ type: SurfaceDrawModule });
-SurfaceDrawModule.ɵinj = ɵɵdefineInjector({ factory: function SurfaceDrawModule_Factory(t) { return new (t || SurfaceDrawModule)(); }, imports: [[]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(SurfaceDrawModule, { declarations: [SurfaceDrawComponent], exports: [SurfaceDrawComponent] }); })();
-/*@__PURE__*/ (function () { ɵsetClassMetadata(SurfaceDrawModule, [{
-        type: NgModule,
-        args: [{
-                declarations: [SurfaceDrawComponent],
-                imports: [],
-                exports: [SurfaceDrawComponent]
-            }]
-    }], null, null); })();
+SurfaceDrawModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+SurfaceDrawModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawModule, declarations: [SurfaceDrawComponent], exports: [SurfaceDrawComponent] });
+SurfaceDrawModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawModule, imports: [[]] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.1", ngImport: i0, type: SurfaceDrawModule, decorators: [{
+            type: NgModule,
+            args: [{
+                    declarations: [SurfaceDrawComponent],
+                    imports: [],
+                    exports: [SurfaceDrawComponent]
+                }]
+        }] });
 
 /*
  * Public API Surface of surface-draw
@@ -720,4 +766,4 @@ SurfaceDrawModule.ɵinj = ɵɵdefineInjector({ factory: function SurfaceDrawModu
  */
 
 export { SurfaceData, SurfaceDrawComponent, SurfaceDrawModule, SurfaceDrawService, ViewControl };
-//# sourceMappingURL=surface-draw.js.map
+//# sourceMappingURL=surface-draw.mjs.map
