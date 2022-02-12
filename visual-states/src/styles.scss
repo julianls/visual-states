@@ -18,3 +18,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .root-div {
     height: 100%;
 }
+
+.full-size-container {
+    position: fixed;
+    top: 67px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+    

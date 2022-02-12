@@ -47,6 +47,10 @@ export class ThemeService {
     return this.isLight ? '#9E9E9E' : '#F3E5F5';
   }
 
+  public getElementSelectedStroke(): string {
+    return this.isLight ? '#FF0000' : '#FF0000';
+  }
+
   public getElementFill(): string {
     return this.isLight ? '#FAFAFA' : '#424242';
   }

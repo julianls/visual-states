@@ -54,7 +54,7 @@ export class StateMachineComponent implements OnInit {
   constructor(private dataService: AppDataService, private route: ActivatedRoute,
               private location: Location, public themeService: ThemeService) {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.commandsData = new CommandsData(this.dataService, this.viewControl, null, this.drawItems);
+    this.commandsData = new CommandsData(this.dataService, this.viewControl, null, this.drawItems, this.themeService);
     this.commandsData.isRequesting = true;
   }
 
@@ -93,7 +93,7 @@ export class StateMachineComponent implements OnInit {
 
   private initData(model: StateMachineModel): void {
 
-    this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems);
+    this.commandsData = new CommandsData(this.dataService, this.viewControl, model, this.drawItems, this.themeService);
     this.commandsData.setInstructionProcessor(new ModelInstructionProcessor(this.commandsData));
     this.initCommands();
     this.commandsData.reloadDrawItems();

@@ -8,7 +8,7 @@
     <button (click)="commandsData.isFileView = !commandsData.isFileView" mat-icon-button matTooltip="File/Diagram View"><mat-icon aria-label="Change View">dashboard</mat-icon></button>
     <button mat-icon-button (click)="goBack()" matTooltip="Close"><mat-icon aria-label="Close">close</mat-icon></button>
 </mat-toolbar>
-<div *ngIf="!commandsData.isFileView">
+<div class="full-size-container" *ngIf="!commandsData.isFileView">
   <lib-surface-draw [(scale)]="viewControl.scale"
                    [(offsetX)]="viewControl.offsetX"
                    [(offsetY)]="viewControl.offsetY"

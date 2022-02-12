@@ -1,13 +1,13 @@
 import { IDrawable, IPoint, ISurfaceDraw } from 'my-libs/base-draw';
 import { Matrix, Point, PointExtensions } from 'my-libs/base-geometry';
+import { ThemeService } from 'src/app/theme.service';
 import { TransitionModel } from '../datamodel/transition';
 import { CommandsData } from '../statemachine/commands/command-data';
 
 export class TransitionDraw implements IDrawable {
     constructor(private commandsData: CommandsData,
                 private transition: TransitionModel,
-                private strokeStyle: string = '#F3E5F5',
-                private selectedStrokeStyle: string = '#23D18B') {
+                public themeService: ThemeService) {
     }
 
     getLayer(): number {
@@ -27,7 +27,7 @@ export class TransitionDraw implements IDrawable {
         targetPos = this.commandsData.activeRoot.findStateById(this.transition.targetStateId).position;
       }
 
-      const stroke = isSelected ? this.selectedStrokeStyle : this.strokeStyle;
+      const stroke = isSelected ? this.themeService.getElementSelectedStroke() : this.themeService.getElementStroke();
 
       surface.line(sourcePos.x, sourcePos.y, targetPos.x, targetPos.y, stroke);
 

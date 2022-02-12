@@ -10,6 +10,7 @@ import { TransitionDraw } from '../../drawable/transition-draw';
 import { StateModel } from '../../datamodel/state';
 import { Container } from '../../../generators/model/container';
 import { ContainerElement } from '../../../generators/model/element';
+import { ThemeService } from 'src/app/theme.service';
 
 export class CommandsData {
     public instructionSet: InstructionSet = new InstructionSet();
@@ -24,7 +25,7 @@ export class CommandsData {
     public activeOffset: Point = new Point(0, 0);
 
     constructor(public dataService: AppDataService, public viewControl: ViewControl,
-                public model: StateMachineModel, public drawItems: IDrawable[]) {
+                public model: StateMachineModel, public drawItems: IDrawable[], public themeService: ThemeService) {
         this.activeRoot = model;
         this.fileData = new Container();
     }
@@ -41,11 +42,11 @@ export class CommandsData {
         this.drawItems.splice(0);
 
         for (const t of this.activeRoot.transitions){
-            this.drawItems.push(new TransitionDraw(this, t));
+            this.drawItems.push(new TransitionDraw(this, t, this.themeService));
         }
 
         for (const s of this.activeRoot.states){
-            this.drawItems.push(new StateDraw(this, s));
+            this.drawItems.push(new StateDraw(this, s, this.themeService));
         }
 
         this.invalidateModelDrawing();
