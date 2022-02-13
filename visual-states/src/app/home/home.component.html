@@ -1,7 +1,10 @@
 <mat-toolbar>
     <h1>State Machines</h1>
     <span class="fill-space"></span>
-    <button (click)="themeService.toggleTheme()" mat-icon-button matTooltip="App/Theme"><mat-icon aria-label="Change Theme">flaky</mat-icon></button>
+    <button (click)="themeService.toggleTheme()" mat-icon-button matTooltip="Switch Dark/Light Mode">
+      <mat-icon *ngIf="themeService.isLight" aria-label="Dark Mode">dark_mode</mat-icon>
+      <mat-icon *ngIf="!themeService.isLight" aria-label="Light Mode">light_mode</mat-icon>
+    </button>
 </mat-toolbar>
 <app-nav></app-nav>
 <button mat-raised-button color="accent" [routerLink]='["/state-machine/new"]'><mat-icon>photo_library</mat-icon><span>CREATE NEW</span></button>
